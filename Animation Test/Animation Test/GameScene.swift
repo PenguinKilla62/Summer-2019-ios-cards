@@ -54,25 +54,12 @@ class GameScene: SKScene {
             TextureArray.append(SKTexture(imageNamed: Name))
         }
         
-        HandTextureArray.append(SKTexture(imageNamed: "Stack_card.png"))
-        HandTextureArray.append(SKTexture(imageNamed: "Blue_card.png"))
-        HandTextureArray.append(SKTexture(imageNamed: "Black_card.png"))
-        HandTextureArray.append(SKTexture(imageNamed: "Red_card.png"))
-        HandTextureArray.append(SKTexture(imageNamed: "Green_card.png"))
+        initArrays(HandTextureArray: &HandTextureArray)
         
-        MainGuy = SKSpriteNode(imageNamed: TextureAtlas.textureNames[0] )
         
-        MainGuy.size = CGSize(width:200, height: 300)
-        MainGuy.position = CGPoint(x: 0 , y: 0 )
-        MainGuy.zPosition = 1
-        MainGuy.name = "MainGuy"
+        initMainNodes(Background: &Background, MainGuy: &MainGuy, TextureAtlas: TextureAtlas, TextureAtlas1: TextureAtlas1)
         
-        Background = SKSpriteNode(imageNamed: TextureAtlas1.textureNames[0] )
-        
-        Background.size = CGSize(width: 750, height: 1334)
-        Background.position = CGPoint(x: 0, y: 0)
-        Background.zPosition = -1
-        Background.name = "background"
+       
         
         for i in 0...HandTextureAtlas.textureNames.count - 1{
             if(HandTextureAtlas.textureNames[i] == "Stack_card.png"){

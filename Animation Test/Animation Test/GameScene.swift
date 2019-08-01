@@ -32,6 +32,8 @@ class GameScene: SKScene {
     
     var colorName = 0
     
+    var lightNode = SKLightNode()
+    
     override func didMove(to: SKView){
         /* Setup scene here*/
         
@@ -47,19 +49,22 @@ class GameScene: SKScene {
         TextureAtlas1 = SKTextureAtlas(named: "background")
         HandTextureAtlas = SKTextureAtlas(named: "card")
         
+        lightNode.isEnabled = false
+        lightNode.zPosition = 3
+        lightNode.categoryBitMask = 1
+        lightNode.shadowColor = SKColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.8)
+        lightNode.lightColor = SKColor(red: 2, green: 2, blue: 2, alpha: 0.8)
+        lightNode.ambientColor = SKColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 0.07)
+        lightNode.falloff = 0
+        
+        
+        self.addChild(lightNode)
         
         for i in 0...TextureAtlas.textureNames.count - 1{
             
             var Name = "testguy\(i).png"
             TextureArray.append(SKTexture(imageNamed: Name))
         }
-        
-        initArrays(HandTextureArray: &HandTextureArray)
-        
-        
-        initMainNodes(Background: &Background, MainGuy: &MainGuy, TextureAtlas: TextureAtlas, TextureAtlas1: TextureAtlas1)
-        
-       
         
         for i in 0...HandTextureAtlas.textureNames.count - 1{
             if(HandTextureAtlas.textureNames[i] == "Stack_card.png"){
@@ -70,12 +75,10 @@ class GameScene: SKScene {
             }
         }
         
-        Hand.append(SKSpriteNode(imageNamed: HandTextureAtlas.textureNames[stackNum]))
+        initArrays(HandTextureArray: &HandTextureArray)
         
-        Hand[0].size = CGSize(width: 216, height: 399)
-        Hand[0].position = CGPoint(x: 275, y: -475)
-        Hand[0].zPosition = 5
-        Hand[0].name = "Stack"
+        
+        initMainNodes(Background: &Background, MainGuy: &MainGuy, Hand: &Hand, TextureAtlas: TextureAtlas, TextureAtlas1: TextureAtlas1, HandTextureAtlas: HandTextureAtlas, stackNum: stackNum)
         
         self.addChild(MainGuy)
         self.addChild(Background)
@@ -85,38 +88,44 @@ class GameScene: SKScene {
     }
     
     @objc func handleTap(sender: UITapGestureRecognizer) {
-            if sender.state == .ended {
-                
-                    var currentCardToBeRemoved = 0
-                if(Hand.count > 1){
-                    for card in Hand{
-                        if card != Hand[0]{
-                            let returnToStack = SKAction .move(to: CGPoint(x:275, y:-475), duration: 0.1)
-                            currentCardToBeRemoved = Hand.firstIndex(of: card)!
-                            card.run(returnToStack)
-                            if(Hand.count > 1){
-                                Hand.remove(at: currentCardToBeRemoved)
+        if sender.state == .ended {
+            
+            
+            
+            var currentCardToBeRemoved = 0
+            if(Hand.count > 1){
+                for card in Hand{
+                    if card != Hand[0]{
+                        let returnToStack = SKAction .move(to: CGPoint(x:275, y:-475), duration: 0.1)
+                        currentCardToBeRemoved = Hand.firstIndex(of: card)!
+                        card.run(returnToStack)
+                        if(Hand.count > 1){
+                            Hand.remove(at: currentCardToBeRemoved)
                             currentCardToBeRemoved += 1
                             colorName -= 1
-                                
-                                
-                                print(colorName)
-                                print(card.name)
-                                print("+",Hand.count)
-                                card.removeFromParent()
-                            }
+                            
+                            
+                            print(colorName)
+                            print(card.name)
+                            print("+",Hand.count)
+                            
                         }
-                        
+                    }
+                    
+                }
+                for card in Hand{
+                    
+                    if card != Hand[0]{
+                    card.removeFromParent()
                     }
                 }
-                
             }
+            
         }
-
+    }
+    
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-       
-        
         
         let touch:UITouch = touches.first!
         let positionInScene = touch.location(in: self)
@@ -132,24 +141,11 @@ class GameScene: SKScene {
         {
             if name == "Stack"
             {
-                // handleTap(sender: recognizer)
-                print("*", recognizer.numberOfTapsRequired)
-                print("Touched")
-                var validNum = Int.random(in: 0...colorNum.count)
+                lightNode.isEnabled = true
+                lightNode.position = Hand[0].position
                 
-                while validNum == stackNum{
-                    validNum = Int.random(in: 0...colorNum.count)
-                }
+                createCard(Hand: &Hand, HandTextureAtlas: &HandTextureAtlas, stackNum: stackNum, colorName: &colorName, colorNum: colorNum)
                 
-                Hand.append(SKSpriteNode(imageNamed: HandTextureAtlas.textureNames[validNum]))
-                Hand[Hand.count-1].size = CGSize(width: 216, height: 399)
-                var newXposition = Hand[0].position.x - 107
-                var newYposition = Hand[0].position.y
-                Hand[Hand.count-1].position = CGPoint(x: newXposition,                                                            y: newYposition)
-                Hand[Hand.count-1].zPosition = 4
-                Hand[Hand.count-1].name = "color\(colorName)"
-                colorName += 1
-                Hand[Hand.count-1].isUserInteractionEnabled = false
                 print(Hand.count-1)
                 print(colorNum.count)
                 self.addChild(Hand[Hand.count-1])
@@ -167,12 +163,15 @@ class GameScene: SKScene {
                     currentNodeSelectedNum = i+1;
                 }
             }
-             
-             if (isColorNodeSelected == true) {
+            
+            if (isColorNodeSelected == true) {
                 touchedNode.position.x = lastTouched.x
                 touchedNode.position.y = lastTouched.y
                 
-                touchedNode.shadowedBitMask = 1
+                touchedNode.shadowedBitMask = 0
+                Hand[currentNodeSelectedNum].scale(to: CGSize(width: 270, height: 498))
+                lightNode.isEnabled = true
+                touchedNode.lightingBitMask = 0
                 
                 for card in Hand{
                     if(card != Hand[currentNodeSelectedNum]  && card != Hand[0]){
@@ -181,12 +180,12 @@ class GameScene: SKScene {
                     }
                 }
                 
-               
+                
             }
             print(touchedNode.name)
             print(self.childNode(withName: "color"))
         }
-      
+        
     }
     
     
@@ -201,21 +200,23 @@ class GameScene: SKScene {
         }
         
         if(touchedNode.name != "Stack" && touchedNode.name != "background" && touchedNode.name != "MainGuy"){
-        touchedNode.position = lastTouched
+            touchedNode.position = lastTouched
+            lightNode.position = touchedNode.position
         }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
+        lightNode.isEnabled = false
         
         
         if(Hand.count > 2){
-        for card in Hand{
-            if(card != Hand[0]){
-            card.scale(to: CGSize(width: 216, height: 399))
-                card.zPosition = 4
+            for card in Hand{
+                if(card != Hand[0]){
+                    card.scale(to: CGSize(width: 216, height: 399))
+                    card.zPosition = 4
+                }
+                card.lightingBitMask = 1
             }
-        }
         }
     }
     
@@ -224,15 +225,15 @@ class GameScene: SKScene {
         
         let touch = lastTouched
         
-       
+        
         
         let xOffset = (touch.x - touchedNode.position.x)*2
         let yOffset = (touch.y - touchedNode.position.y)*2
-                let impulseVector = CGVector(dx: xOffset, dy: yOffset)
-                touchedNode.physicsBody?.applyImpulse(impulseVector)
+        let impulseVector = CGVector(dx: xOffset, dy: yOffset)
+        touchedNode.physicsBody?.applyImpulse(impulseVector)
         
         
-        }
-        
-
+    }
+    
+    
 }

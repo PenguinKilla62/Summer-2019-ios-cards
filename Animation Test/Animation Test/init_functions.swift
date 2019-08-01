@@ -18,7 +18,7 @@ func initArrays( HandTextureArray: inout [SKTexture]){
     HandTextureArray.append(SKTexture(imageNamed: "Green_card.png"))
 }
 
-func initMainNodes(Background: inout SKSpriteNode, MainGuy:  inout SKSpriteNode, Hand: inout [SKSpriteNode], TextureAtlas: SKTextureAtlas, TextureAtlas1: SKTextureAtlas, HandTextureAtlas: SKTextureAtlas, stackNum: Int){
+func initMainNodes(Background: inout SKSpriteNode, MainGuy:  inout SKSpriteNode, Hand: inout [SKSpriteNode], lightNode: inout SKLightNode, TextureAtlas: SKTextureAtlas, TextureAtlas1: SKTextureAtlas, HandTextureAtlas: SKTextureAtlas, stackNum: Int){
     
     MainGuy = SKSpriteNode(imageNamed: TextureAtlas.textureNames[0] )
     
@@ -43,4 +43,20 @@ func initMainNodes(Background: inout SKSpriteNode, MainGuy:  inout SKSpriteNode,
     Hand[0].position = CGPoint(x: 275, y: -475)
     Hand[0].zPosition = 5
     Hand[0].name = "Stack"
+    
+    
+    lightNode.isEnabled = false
+    lightNode.zPosition = 3
+    lightNode.categoryBitMask = 1
+    lightNode.shadowColor = SKColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.8)
+    lightNode.lightColor = SKColor(red: 2, green: 2, blue: 2, alpha: 0.8)
+    lightNode.ambientColor = SKColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 0.07)
+    lightNode.falloff = 0
+    lightNode.name = "light"
+}
+
+
+func initPlacement(){
+    
+    
 }

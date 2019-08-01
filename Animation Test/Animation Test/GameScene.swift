@@ -23,6 +23,10 @@ class GameScene: SKScene {
     var MainGuy = SKSpriteNode()
     var Background = SKSpriteNode()
     
+    var Placement: [SKSpriteNode] = [SKSpriteNode]()
+    var PlacementTextureAtlas = SKTextureAtlas()
+    var PlacementTexture = SKTexture()
+    
     var Hand : [SKSpriteNode] = [SKSpriteNode]()
     var stackNum = Int()
     var colorNum = [Int]()
@@ -48,17 +52,12 @@ class GameScene: SKScene {
         TextureAtlas = SKTextureAtlas(named: "images")
         TextureAtlas1 = SKTextureAtlas(named: "background")
         HandTextureAtlas = SKTextureAtlas(named: "card")
+        PlacementTextureAtlas = SKTextureAtlas(named: "Placement")
         
-        lightNode.isEnabled = false
-        lightNode.zPosition = 3
-        lightNode.categoryBitMask = 1
-        lightNode.shadowColor = SKColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.8)
-        lightNode.lightColor = SKColor(red: 2, green: 2, blue: 2, alpha: 0.8)
-        lightNode.ambientColor = SKColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 0.07)
-        lightNode.falloff = 0
-        
-        
-        self.addChild(lightNode)
+        for i in 0...5{
+            
+            Placement.append(SKSpriteNode(imageNamed: PlacementTextureAtlas.textureNames[0]))
+        }
         
         for i in 0...TextureAtlas.textureNames.count - 1{
             
@@ -78,12 +77,12 @@ class GameScene: SKScene {
         initArrays(HandTextureArray: &HandTextureArray)
         
         
-        initMainNodes(Background: &Background, MainGuy: &MainGuy, Hand: &Hand, TextureAtlas: TextureAtlas, TextureAtlas1: TextureAtlas1, HandTextureAtlas: HandTextureAtlas, stackNum: stackNum)
+        initMainNodes(Background: &Background, MainGuy: &MainGuy, Hand: &Hand, lightNode: &lightNode, TextureAtlas: TextureAtlas, TextureAtlas1: TextureAtlas1, HandTextureAtlas: HandTextureAtlas, stackNum: stackNum)
         
         self.addChild(MainGuy)
         self.addChild(Background)
         self.addChild(Hand[0])
-        
+        self.addChild(lightNode)
         
     }
     
@@ -222,16 +221,6 @@ class GameScene: SKScene {
     
     
     override func update(_ currentTime: TimeInterval) {
-        
-        let touch = lastTouched
-        
-        
-        
-        let xOffset = (touch.x - touchedNode.position.x)*2
-        let yOffset = (touch.y - touchedNode.position.y)*2
-        let impulseVector = CGVector(dx: xOffset, dy: yOffset)
-        touchedNode.physicsBody?.applyImpulse(impulseVector)
-        
         
     }
     

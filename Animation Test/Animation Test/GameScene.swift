@@ -40,6 +40,10 @@ class GameScene: SKScene {
     
     var lightNode = SKLightNode()
     
+    var round = 0
+    var playerDraw = 2
+    var didPlayerRedraw = false
+    
     override func didMove(to: SKView){
         /* Setup scene here*/
         
@@ -91,10 +95,8 @@ class GameScene: SKScene {
     
     @objc func handleTap(sender: UITapGestureRecognizer) {
         if sender.state == .ended {
-            
-            
-            
             var currentCardToBeRemoved = 0
+            var currentNumOfCardsToBeRedrawn = Hand.count-1
             if(Hand.count > 1){
                 for card in Hand{
                     if card != Hand[0]{
@@ -102,6 +104,7 @@ class GameScene: SKScene {
                         currentCardToBeRemoved = Hand.firstIndex(of: card)!
                         card.run(returnToStack)
                         if(Hand.count > 1){
+                            self.removeChildren(in: [self.childNode(withName: card.name!)!])
                             Hand.remove(at: currentCardToBeRemoved)
                             currentCardToBeRemoved += 1
                             colorName -= 1
@@ -115,16 +118,39 @@ class GameScene: SKScene {
                     }
                     
                 }
+                print("[",self.children.count)
                 for card in Hand{
                     
                     if card != Hand[0]{
-                    card.removeFromParent()
+                        var hold = Hand.firstIndex(of: card)!
+                        card.removeFromParent()
+                        Hand.remove(at: hold)
                     }
                 }
+                print(self.children.count, "]")
+                
+            }
+       //    =  redrawPlayerHand(Hand: &Hand, HandTextureAtlas: &HandTextureAtlas, stackNum: stackNum, colorName: &colorName, colorNum: colorNum, didPlayerRedraw: &didPlayerRedraw)
+            didPlayerRedraw = true
+            
+            if didPlayerRedraw == true{
+                
+                
+                        while Hand.count-1 < (currentNumOfCardsToBeRedrawn) {
+                            createCard(Hand: &Hand, HandTextureAtlas: &HandTextureAtlas, stackNum: stackNum, colorName: &colorName, colorNum: colorNum)
+                        }
+                for i in 0...Hand.count-1{
+                    if i != 0{
+                        self.addChild(Hand[i])
+                    }
+                }
+                    }
+            
+                didPlayerRedraw = false
             }
             
         }
-    }
+    
     
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -151,7 +177,8 @@ class GameScene: SKScene {
                 print(Hand.count-1)
                 print(colorNum.count)
                 self.addChild(Hand[Hand.count-1])
-                //sortHand(Hand: &Hand)
+               
+                
             }
             else if name == "MainGuy"{
                 MainGuy.run(SKAction.repeatForever(SKAction.animate(with: TextureArray, timePerFrame: 0.05)))
@@ -223,7 +250,8 @@ class GameScene: SKScene {
             for card in Hand{
                 if(card != Hand[0] && card != touchedNode){
                     let currentCard = Hand.firstIndex(of: card)!
-                    let moveToHand = SKAction .move(to: CGPoint(x:200 + (-50 * ((Hand.count-1) - currentCard)), y:-475), duration: 0.1)
+                    let moveToHand = SKAction .move(to: CGPoint(x:150 + (-50 * ((Hand.count-1) - currentCard)), y:-475), duration: 0.1)
+                    
                     card.run(moveToHand)
                 }
             }
@@ -233,18 +261,19 @@ class GameScene: SKScene {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         lightNode.isEnabled = false
         
+        print(self.scene?.children)
         checkIfCardPlayed(touchedNode: &touchedNode, Hand: &Hand, Placement: &Placement, Played: &Played, colorName: &colorName)
         
-        if(Hand.count > 2){
+        if(Hand.count >= 2){
             for card in Hand{
                 if(card != Hand[0]){
                     card.scale(to: CGSize(width: 162, height: 299))
                     card.zPosition = 4
                     let currentCard = Hand.firstIndex(of: card)!
-                    let moveToHand = SKAction .move(to: CGPoint(x:150 + (-50 * ((Hand.count-1) - currentCard)), y:-475), duration: 0.1)
-                    let shrink = SKAction .resize(toWidth: (CGFloat(262 / ((Hand.count)))), height: (399), duration: 0.1)
+                    let moveToHand = SKAction .move(to: CGPoint(x:125 + (-50 * ((Hand.count-1) - currentCard)), y:-475), duration: 0.1)
+                  //  let shrink = SKAction .resize(toWidth: (CGFloat(262 / ((Hand.count)))), height: (399), duration: 0.1)
                     card.run(moveToHand)
-                    card.run(shrink)
+               //     card.run(shrink)
                     print(card.position)
                     
                 }
@@ -262,6 +291,6 @@ class GameScene: SKScene {
     }
     
     override func didFinishUpdate() {
-      
+        
     }
 }

@@ -3,21 +3,35 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "GameScene.touchesMoved(_:with:):GameScene.swift">
-      </ContextState>
-      <ContextState
          contextName = "GameScene.touchesEnded(_:with:):GameScene.swift">
          <PersistentStrings>
             <PersistentString
                value = "Hand.count">
             </PersistentString>
+            <PersistentString
+               value = "">
+            </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "GameScene.touchesMoved(_:with:):GameScene.swift">
       </ContextState>
       <ContextState
          contextName = "GameScene.didMove(to:):GameScene.swift">
          <PersistentStrings>
             <PersistentString
                value = "TextureAtlas1.textureNames">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "GameScene.touchesBegan(_:with:):GameScene.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Hand">
+            </PersistentString>
+            <PersistentString
+               value = "touchedNode.name">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

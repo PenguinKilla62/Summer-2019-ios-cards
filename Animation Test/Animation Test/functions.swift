@@ -56,6 +56,11 @@ func checkIfCardPlayed(touchedNode: inout SKSpriteNode, Hand: inout [SKSpriteNod
                 Played[Played.count-1].name = "Played\(Played.count-1)"
                 Hand.remove(at: currentNode)
                 colorName -= 1
+                if colorName != 0{
+                for i in 1...Hand.count-1{
+                    Hand[i].name = "color\(i)"
+                }
+                }
             }
         }
     }
@@ -65,6 +70,20 @@ func checkIfCardPlayed(touchedNode: inout SKSpriteNode, Hand: inout [SKSpriteNod
 func sortHand(Hand: inout[SKSpriteNode]){
     
 
+}
+
+func redrawPlayerHand(Hand: inout [SKSpriteNode],HandTextureAtlas: inout SKTextureAtlas, stackNum: Int, colorName: inout Int, colorNum:  [Int], didPlayerRedraw: inout Bool) -> Int{
+    
+    var currentNumOfCardsToBeRedrawn = Hand.count-1
+    
+    if didPlayerRedraw == false{
+        
+        
+       
+        didPlayerRedraw = true
+    }
+    return currentNumOfCardsToBeRedrawn
+    
 }
 
 

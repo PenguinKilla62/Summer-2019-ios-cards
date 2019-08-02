@@ -3,14 +3,11 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "GameScene.handleTap(sender:):GameScene.swift">
+         contextName = "GameScene.touchesMoved(_:with:):GameScene.swift">
+      </ContextState>
+      <ContextState
+         contextName = "GameScene.touchesEnded(_:with:):GameScene.swift">
          <PersistentStrings>
-            <PersistentString
-               value = "sender.state">
-            </PersistentString>
-            <PersistentString
-               value = "sender.numberOfTapsRequired">
-            </PersistentString>
             <PersistentString
                value = "Hand.count">
             </PersistentString>
@@ -21,6 +18,20 @@
          <PersistentStrings>
             <PersistentString
                value = "TextureAtlas1.textureNames">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "GameScene.handleTap(sender:):GameScene.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "sender.state">
+            </PersistentString>
+            <PersistentString
+               value = "sender.numberOfTapsRequired">
+            </PersistentString>
+            <PersistentString
+               value = "Hand.count">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

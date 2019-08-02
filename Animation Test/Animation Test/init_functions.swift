@@ -22,8 +22,8 @@ func initMainNodes(Background: inout SKSpriteNode, MainGuy:  inout SKSpriteNode,
     
     MainGuy = SKSpriteNode(imageNamed: TextureAtlas.textureNames[0] )
     
-    MainGuy.size = CGSize(width:200, height: 300)
-    MainGuy.position = CGPoint(x: 0 , y: 0 )
+    MainGuy.size = CGSize(width:75, height: 125)
+    MainGuy.position = CGPoint(x: 325 , y: 100 )
     MainGuy.zPosition = 1
     MainGuy.name = "MainGuy"
     
@@ -56,7 +56,33 @@ func initMainNodes(Background: inout SKSpriteNode, MainGuy:  inout SKSpriteNode,
 }
 
 
-func initPlacement(){
+func initPlacement(Placement : inout [SKSpriteNode], PlacementTextureAtlas: inout SKTextureAtlas){
     
+    var hold = 0
     
+    while hold < 6{
+        
+        Placement.append(SKSpriteNode(imageNamed: PlacementTextureAtlas.textureNames[0]))
+        Placement[Placement.count-1].size = CGSize(width: 162, height:299)
+        Placement[Placement.count-1].shadowedBitMask = 0
+        Placement[Placement.count-1].shadowCastBitMask = 0
+        Placement[Placement.count-1].lightingBitMask = 1
+        Placement[Placement.count-1].zPosition = 0
+        Placement[Placement.count-1].isUserInteractionEnabled = false
+        Placement[Placement.count-1].name = "Placement\(hold)"
+        
+        switch hold{
+            
+        case 0...2:
+            Placement[Placement.count-1].position = CGPoint(x: (-200) + (200 * hold), y:300)
+        case 3...5:
+            Placement[Placement.count-1].position = CGPoint(x: (-200) + (200 * (hold - 3)), y:-100)
+            
+        default:
+            Placement[Placement.count-1].position = CGPoint(x: 250,y: -450)
+        }
+        
+        hold += 1
+        
+    }
 }

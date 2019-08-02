@@ -27,6 +27,8 @@ class GameScene: SKScene {
     var PlacementTextureAtlas = SKTextureAtlas()
     var PlacementTexture = SKTexture()
     
+    var Played:[SKSpriteNode] = [SKSpriteNode]()
+    
     var Hand : [SKSpriteNode] = [SKSpriteNode]()
     var stackNum = Int()
     var colorNum = [Int]()
@@ -54,10 +56,7 @@ class GameScene: SKScene {
         HandTextureAtlas = SKTextureAtlas(named: "card")
         PlacementTextureAtlas = SKTextureAtlas(named: "Placement")
         
-        for i in 0...5{
-            
-            Placement.append(SKSpriteNode(imageNamed: PlacementTextureAtlas.textureNames[0]))
-        }
+        initPlacement(Placement: &Placement, PlacementTextureAtlas: &PlacementTextureAtlas)
         
         for i in 0...TextureAtlas.textureNames.count - 1{
             
@@ -83,6 +82,10 @@ class GameScene: SKScene {
         self.addChild(Background)
         self.addChild(Hand[0])
         self.addChild(lightNode)
+        
+        for place in Placement{
+            self.addChild(place)
+        }
         
     }
     
@@ -148,6 +151,7 @@ class GameScene: SKScene {
                 print(Hand.count-1)
                 print(colorNum.count)
                 self.addChild(Hand[Hand.count-1])
+                //sortHand(Hand: &Hand)
             }
             else if name == "MainGuy"{
                 MainGuy.run(SKAction.repeatForever(SKAction.animate(with: TextureArray, timePerFrame: 0.05)))
@@ -197,32 +201,66 @@ class GameScene: SKScene {
             let touchLocation = touch.location(in: self)
             lastTouched = touchLocation
         }
+        var isPlacement = false
+        for i in 0...5{
+            if touchedNode.name == "Placement\(i)"{
+                isPlacement = true
+            }
+        }
         
-        if(touchedNode.name != "Stack" && touchedNode.name != "background" && touchedNode.name != "MainGuy"){
+        var isPlayed = false
+        for i in 0...5{
+            if touchedNode.name == "Played\(i)"{
+                isPlayed = true
+            }
+            
+        }
+        
+        if(touchedNode.name != "Stack" && touchedNode.name != "background" && touchedNode.name != "MainGuy" && isPlacement == false && isPlayed == false){
             touchedNode.position = lastTouched
             lightNode.position = touchedNode.position
+            for card in Hand{
+                if(card != Hand[0] && card != touchedNode){
+                    let currentCard = Hand.firstIndex(of: card)!
+                    let moveToHand = SKAction .move(to: CGPoint(x:200 + (-50 * ((Hand.count-1) - currentCard)), y:-475), duration: 0.1)
+                    card.run(moveToHand)
+                }
+            }
         }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         lightNode.isEnabled = false
         
+        checkIfCardPlayed(touchedNode: &touchedNode, Hand: &Hand, Placement: &Placement, Played: &Played, colorName: &colorName)
         
         if(Hand.count > 2){
             for card in Hand{
                 if(card != Hand[0]){
-                    card.scale(to: CGSize(width: 216, height: 399))
+                    card.scale(to: CGSize(width: 162, height: 299))
                     card.zPosition = 4
+                    let currentCard = Hand.firstIndex(of: card)!
+                    let moveToHand = SKAction .move(to: CGPoint(x:150 + (-50 * ((Hand.count-1) - currentCard)), y:-475), duration: 0.1)
+                    let shrink = SKAction .resize(toWidth: (CGFloat(262 / ((Hand.count)))), height: (399), duration: 0.1)
+                    card.run(moveToHand)
+                    card.run(shrink)
+                    print(card.position)
+                    
                 }
                 card.lightingBitMask = 1
             }
+            
         }
+        
     }
+    
     
     
     override func update(_ currentTime: TimeInterval) {
         
     }
     
-    
+    override func didFinishUpdate() {
+      
+    }
 }

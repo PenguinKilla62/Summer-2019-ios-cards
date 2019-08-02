@@ -172,6 +172,7 @@ class GameScene: SKScene {
                 touchedNode.position.y = lastTouched.y
                 
                 touchedNode.shadowedBitMask = 0
+                currentNodeSelectedNum = Hand.firstIndex(of: touchedNode)!
                 Hand[currentNodeSelectedNum].scale(to: CGSize(width: 270, height: 498))
                 lightNode.isEnabled = true
                 touchedNode.lightingBitMask = 0
@@ -209,7 +210,7 @@ class GameScene: SKScene {
         }
         
         var isPlayed = false
-        for i in 0...5{
+        for i in 0...(Played.count){
             if touchedNode.name == "Played\(i)"{
                 isPlayed = true
             }

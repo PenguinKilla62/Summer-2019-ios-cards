@@ -51,6 +51,7 @@ func checkIfCardPlayed(touchedNode: inout SKSpriteNode, Hand: inout [SKSpriteNod
                 let currentNode = Hand.firstIndex(of: touchedNode)!
                 Played.append(Hand[currentNode])
                 Played[Played.count-1].size = place.size
+                Played[Played.count-1].zPosition = place.zPosition
                 Played[Played.count-1].lightingBitMask = 1
                 Played[Played.count-1].name = "Played\(Played.count-1)"
                 Hand.remove(at: currentNode)

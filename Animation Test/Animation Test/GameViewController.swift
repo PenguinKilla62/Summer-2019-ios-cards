@@ -38,8 +38,27 @@ class GameViewController: UIViewController {
                 }
             }
         }
+        
+        
+        
+    }
+    override func viewDidAppear(_ animated: Bool) {
+      var scene = mainGame()
+        scene.Hand[0].position = CGPoint(x:0,y:0)
     }
 
+    func mainGame() -> GameScene{
+        var scene =  GameScene()
+        let ControllerView = self.view as! SKView
+        
+        
+        scene.didMove(to: ControllerView)
+        
+        return  scene
+        }
+        
+    
+    
     override var shouldAutorotate: Bool {
         return true
     }

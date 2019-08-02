@@ -194,15 +194,12 @@ class GameScene: SKScene {
                 }
             }
             
+            
             if (isColorNodeSelected == true) {
                 touchedNode.position.x = lastTouched.x
                 touchedNode.position.y = lastTouched.y
                 
-                touchedNode.shadowedBitMask = 0
                 currentNodeSelectedNum = Hand.firstIndex(of: touchedNode)!
-                Hand[currentNodeSelectedNum].scale(to: CGSize(width: 270, height: 498))
-                lightNode.isEnabled = true
-                touchedNode.lightingBitMask = 0
                 
                 for card in Hand{
                     if(card != Hand[currentNodeSelectedNum]  && card != Hand[0]){
@@ -221,6 +218,9 @@ class GameScene: SKScene {
     
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        var currentNodeSelectedNum = 0
+        
         let touch:UITouch = touches.first!
         let positionInScene = touch.location(in: self)
         touchedNode = self.atPoint(positionInScene) as! SKSpriteNode
@@ -247,6 +247,12 @@ class GameScene: SKScene {
         if(touchedNode.name != "Stack" && touchedNode.name != "background" && touchedNode.name != "MainGuy" && isPlacement == false && isPlayed == false){
             touchedNode.position = lastTouched
             lightNode.position = touchedNode.position
+            touchedNode.shadowedBitMask = 0
+            currentNodeSelectedNum = Hand.firstIndex(of: touchedNode)!
+            Hand[currentNodeSelectedNum].scale(to: CGSize(width: 270, height: 498))
+            lightNode.isEnabled = true
+            touchedNode.lightingBitMask = 0
+            
             for card in Hand{
                 if(card != Hand[0] && card != touchedNode){
                     let currentCard = Hand.firstIndex(of: card)!

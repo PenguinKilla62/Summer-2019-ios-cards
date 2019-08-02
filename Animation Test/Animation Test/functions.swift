@@ -49,6 +49,11 @@ func checkIfCardPlayed(touchedNode: inout SKSpriteNode, Hand: inout [SKSpriteNod
                 ){
                 touchedNode.position = place.position
                 let currentNode = Hand.firstIndex(of: touchedNode)!
+                
+//                var currentPlayed = Bool()
+//                var placementName = place.name
+//                var placementNum = placementName![(placementName?.endIndex)!]
+                
                 Played.append(Hand[currentNode])
                 Played[Played.count-1].size = place.size
                 Played[Played.count-1].zPosition = place.zPosition

@@ -18,7 +18,7 @@ func initArrays( HandTextureArray: inout [SKTexture]){
     HandTextureArray.append(SKTexture(imageNamed: "Green_card.png"))
 }
 
-func initMainNodes(Background: inout SKSpriteNode, MainGuy:  inout SKSpriteNode, Hand: inout [SKSpriteNode], lightNode: inout SKLightNode, TextureAtlas: SKTextureAtlas, TextureAtlas1: SKTextureAtlas, HandTextureAtlas: SKTextureAtlas, stackNum: Int){
+func initMainNodes(Background: inout SKSpriteNode, MainGuy:  inout SKSpriteNode, Hand: inout [SKSpriteNode], lightNode: inout SKLightNode, TextureAtlas: SKTextureAtlas, TextureAtlas1: SKTextureAtlas, HandTextureAtlas: SKTextureAtlas, stackNum: Int, playerHPLabelNode: inout SKLabelNode, playerHPLabelSpriteNode: inout SKSpriteNode){
     
     MainGuy = SKSpriteNode(imageNamed: TextureAtlas.textureNames[0] )
     
@@ -39,9 +39,9 @@ func initMainNodes(Background: inout SKSpriteNode, MainGuy:  inout SKSpriteNode,
     
     Hand.append(SKSpriteNode(imageNamed: HandTextureAtlas.textureNames[stackNum]))
     
-    Hand[0].size = CGSize(width: 216, height: 399)
+    Hand[0].size = CGSize(width: 216, height: 299)
     Hand[0].position = CGPoint(x: 275, y: -475)
-    Hand[0].zPosition = 5
+    Hand[0].zPosition = 4
     Hand[0].name = "Stack"
     
     
@@ -53,6 +53,19 @@ func initMainNodes(Background: inout SKSpriteNode, MainGuy:  inout SKSpriteNode,
     lightNode.ambientColor = SKColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 0.07)
     lightNode.falloff = 0
     lightNode.name = "light"
+    
+    
+    playerHPLabelNode = SKLabelNode(text: "5")
+    playerHPLabelNode.fontSize = 300
+    playerHPLabelNode.fontColor = .black
+    playerHPLabelNode.position = CGPoint(x: 0,y: -playerHPLabelNode.frame.size.height/2)
+    playerHPLabelNode.zPosition = 5
+    
+    playerHPLabelSpriteNode = SKSpriteNode(color: .white, size: Hand[0].size)
+    playerHPLabelSpriteNode.zPosition = 5
+    playerHPLabelSpriteNode.position = Hand[0].position
+    playerHPLabelSpriteNode.name = "HPLABEL"
+    [playerHPLabelSpriteNode .addChild(playerHPLabelNode)]
 }
 
 
@@ -85,4 +98,5 @@ func initPlacement(Placement : inout [SKSpriteNode], PlacementTextureAtlas: inou
         hold += 1
         
     }
+    
 }

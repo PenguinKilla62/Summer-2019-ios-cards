@@ -3,33 +3,6 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "GameScene.touchesMoved(_:with:):GameScene.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "touchedNode.name">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "GameScene.touchesEnded(_:with:):GameScene.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "Hand.count">
-            </PersistentString>
-            <PersistentString
-               value = "">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "GameScene.didMove(to:):GameScene.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "TextureAtlas1.textureNames">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "GameScene.touchesBegan(_:with:):GameScene.swift">
          <PersistentStrings>
             <PersistentString
@@ -49,16 +22,76 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "calculatePlayedCards(Played:HandTextureAtlas:):functions.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Played[0].texture?.cgImage()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "calculatePlayedCards(Played:PlayedColors:):functions.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "HandColors.count">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "GameScene.touchesMoved(_:with:):GameScene.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "touchedNode.name">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "initPlacement(Placement:PlacementTextureAtlas:):init_functions.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Placement[0].name">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "GameScene.touchesEnded(_:with:):GameScene.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Hand.count">
+            </PersistentString>
+            <PersistentString
+               value = "HandColors.count">
+            </PersistentString>
+            <PersistentString
+               value = "HandColors">
+            </PersistentString>
+            <PersistentString
+               value = "Hand">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "GameScene.didMove(to:):GameScene.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "TextureAtlas1.textureNames">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "GameScene.handleTap(sender:):GameScene.swift">
          <PersistentStrings>
             <PersistentString
-               value = "sender.state">
+               value = "Hand.count">
+            </PersistentString>
+            <PersistentString
+               value = "HandColors.count">
             </PersistentString>
             <PersistentString
                value = "sender.numberOfTapsRequired">
             </PersistentString>
             <PersistentString
-               value = "Hand.count">
+               value = "sender.state">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

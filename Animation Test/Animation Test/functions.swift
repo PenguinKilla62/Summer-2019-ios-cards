@@ -20,24 +20,32 @@ func stackToHand(Hand: inout[SKSpriteNode]){
     
 }
 
-func checkIfCardPlayed(touchedNode: inout SKSpriteNode, Hand: inout [SKSpriteNode], scene: inout GameScene,Placement: inout [SKSpriteNode], Played: inout [SKSpriteNode], colorName: inout Int){
+func checkIfCardPlayed(touchedNode: inout SKSpriteNode, Hand: inout [SKSpriteNode], scene: inout GameScene,Placement: inout [SKSpriteNode], Played: inout [SKSpriteNode], colorName: inout Int, HandColors: inout [String], PlayedColors: inout [String]){
     
-    var isPlacement = false
-    for i in 0...5{
-        if touchedNode.name == "Placement\(i)"{
-            isPlacement = true
-        }
-    }
+//    var isPlacement = false
+//    for i in 0...5{
+//        if touchedNode.name == "Placement\(i)"{
+//            isPlacement = true
+//        }
+//    }
+//    
+//    var isPlayed = false
+//    for i in 0...(Played.count){
+//        if touchedNode.name == "Played\(i)"{
+//            isPlayed = true
+//        }
+//        
+//    }
     
-    var isPlayed = false
-    for i in 0...(Played.count){
-        if touchedNode.name == "Played\(i)"{
-            isPlayed = true
-        }
+    var isHand = false
+    for i in 1...Hand.count-1{
         
+        if touchedNode.name == "color\(i)"{
+            isHand = true
+        }
     }
     
-    if(touchedNode.name != Hand[0].name && touchedNode.name != "background" && touchedNode.name != "MainGuy" && isPlacement == false && isPlayed == false){
+    if(touchedNode.name != Hand[0].name && isHand == true){
         
         for place in Placement{
             
@@ -59,6 +67,7 @@ func checkIfCardPlayed(touchedNode: inout SKSpriteNode, Hand: inout [SKSpriteNod
                 
                 var playedNameHold  = "Played"
                 var foundNode: SKSpriteNode?
+                var foundNodeIndexNum = Int()
                 playedNameHold.append(place.name!.last!)
                 
                 for n in Played{
@@ -69,18 +78,20 @@ func checkIfCardPlayed(touchedNode: inout SKSpriteNode, Hand: inout [SKSpriteNod
                 
                 if foundNode != nil{
                     scene.removeChildren(in: [scene.childNode(withName: foundNode!.name!)!])
-                    Played.remove(at: Played.firstIndex(of: foundNode!)!)
+                    foundNodeIndexNum = Played.firstIndex(of: foundNode!)!
+                    //Played.remove(at: foundNodeIndexNum)
                 }
-                
-                Played.append(Hand[currentNode])
-                Played[Played.count-1].size = place.size
-                Played[Played.count-1].zPosition = place.zPosition
-                Played[Played.count-1].lightingBitMask = 1
-                
-                
-                
-                Played[Played.count-1].name = playedNameHold
+                else{
+                    foundNodeIndexNum = Int(String(place.name!.last!))!
+                }
+                Played[foundNodeIndexNum] = Hand[currentNode]
+                Played[foundNodeIndexNum].size = place.size
+                Played[foundNodeIndexNum].zPosition = place.zPosition
+                Played[foundNodeIndexNum].lightingBitMask = 1
+                Played[foundNodeIndexNum].name = playedNameHold
+                PlayedColors[foundNodeIndexNum] = HandColors[currentNode-1]
                 Hand.remove(at: currentNode)
+                HandColors.remove(at: currentNode-1)
                 colorName -= 1
                 if colorName != 0{
                 for i in 1...Hand.count-1{
@@ -128,8 +139,29 @@ func placeCardsInHand(Hand: inout [SKSpriteNode]){
     }
 }
 
+func figureColorOfCard(HandtextureAtlas: inout SKTextureAtlas, validNum: Int, HandColors: inout [String]){
+    
+    switch HandtextureAtlas.textureNames[validNum]{
+    case "Green_card.png":
+        HandColors.append("Green")
+    case "Blue_card.png":
+        HandColors.append("Blue")
+    case "Red_card.png":
+        HandColors.append("Red")
+    case "Black_card.png":
+        HandColors.append("Black")
+    case "White_card.png":
+        HandColors.append("White")
+        
+    default:
+        HandColors.append("BROKE")
+    }
+    
+    
+}
 
-func createCard(Hand: inout [SKSpriteNode], HandTextureAtlas: inout SKTextureAtlas, stackNum: Int, colorName: inout Int, colorNum: [Int] ){
+
+func createCard(Hand: inout [SKSpriteNode], HandTextureAtlas: inout SKTextureAtlas, stackNum: Int, colorName: inout Int, colorNum: [Int], HandColors: inout [String] ){
     
     var validNum = Int.random(in: 0...colorNum.count)
     
@@ -138,6 +170,8 @@ func createCard(Hand: inout [SKSpriteNode], HandTextureAtlas: inout SKTextureAtl
     }
     
     Hand.append(SKSpriteNode(imageNamed: HandTextureAtlas.textureNames[validNum]))
+    
+    figureColorOfCard(HandtextureAtlas: &HandTextureAtlas, validNum: validNum, HandColors: &HandColors)
     Hand[Hand.count-1].size = CGSize(width: 216, height: 399)
     var newXposition = Hand[0].position.x - 107
     var newYposition = Hand[0].position.y
@@ -153,27 +187,27 @@ func createCard(Hand: inout [SKSpriteNode], HandTextureAtlas: inout SKTextureAtl
     Hand[Hand.count-1].isUserInteractionEnabled = false
 }
 
-func startHand(GeneralHand: inout [SKSpriteNode], GameScene: inout GameScene, HandTextureAtlas: inout SKTextureAtlas, stackNum: Int, colorName: inout Int, colorNum: [Int]){
+func startHand(GeneralHand: inout [SKSpriteNode], GameScene: inout GameScene, HandTextureAtlas: inout SKTextureAtlas, stackNum: Int, colorName: inout Int, colorNum: [Int], HandColors: inout [String]){
     
     for i in 0...4{
-        createCard(Hand: &GeneralHand, HandTextureAtlas: &HandTextureAtlas, stackNum: stackNum, colorName: &colorName, colorNum: colorNum)
+        createCard(Hand: &GeneralHand, HandTextureAtlas: &HandTextureAtlas, stackNum: stackNum, colorName: &colorName, colorNum: colorNum, HandColors: &HandColors)
         GameScene.addChild(GeneralHand[GeneralHand.count-1])
     }
     placeCardsInHand(Hand: &GeneralHand)
     
 }
 
-func drawCardsforHand(GeneralHand: inout [SKSpriteNode], GameScene: inout GameScene, HandTextureAtlas: inout SKTextureAtlas, stackNum: Int, colorName: inout Int, colorNum: [Int], numOfCardsToDraw: Int){
+func drawCardsforHand(GeneralHand: inout [SKSpriteNode], GameScene: inout GameScene, HandTextureAtlas: inout SKTextureAtlas, stackNum: Int, colorName: inout Int, colorNum: [Int], numOfCardsToDraw: Int, HandColors: inout [String]){
     
     for i in 1...numOfCardsToDraw{
-        createCard(Hand: &GeneralHand, HandTextureAtlas: &HandTextureAtlas, stackNum: stackNum, colorName: &colorName, colorNum: colorNum)
+        createCard(Hand: &GeneralHand, HandTextureAtlas: &HandTextureAtlas, stackNum: stackNum, colorName: &colorName, colorNum: colorNum, HandColors: &HandColors)
         GameScene.addChild(GeneralHand[GeneralHand.count-1])
     }
     placeCardsInHand(Hand: &GeneralHand)
     
 }
 
-func calculatePlayedCards(Played: [SKSpriteNode], HandTextureAtlas: inout SKTextureAtlas){
+func calculatePlayedCards(Played: inout [SKSpriteNode], PlayedColors: inout [String]){
     
     // RED > GREEN
     // GREEN > BLUE
@@ -181,30 +215,126 @@ func calculatePlayedCards(Played: [SKSpriteNode], HandTextureAtlas: inout SKText
     // BLACK > RED > GREEN > BLUE
     //
     // WHITE > BLACK
-    // RED > GREEN > BLUE > WHITE
+    // (RED || GREEN || BLUE) > WHITE
+    //
+    // (BLACK || RED || GREEN || BLUE || WHITE) > NOTHING
     
     var cardColors = [String]()
     
+    var laneWinnerNum = [Int]()
     
-    for i in 0...Played.count-1{
-        switch Played[i].texture?.cgImage(){
-        case HandTextureAtlas.textureNamed("Green_card.png").cgImage():
-            cardColors.append("Green")
-        case HandTextureAtlas.textureNamed("Blue_card.png").cgImage():
-            cardColors.append("Blue")
-        case HandTextureAtlas.textureNamed("Red_card.png").cgImage():
-            cardColors.append("Red")
-        case HandTextureAtlas.textureNamed("Black_card.png").cgImage():
-            cardColors.append("Black")
-        case HandTextureAtlas.textureNamed("White_card.png").cgImage():
-            cardColors.append("White")
+    for i in 0...2{
         
+        switch PlayedColors[i]{
+        case "Green":
+            switch PlayedColors[i+3]{
+            case "Green":
+                laneWinnerNum.append(-1)
+            case "Blue":
+                laneWinnerNum.append(i)
+            case "Red":
+                laneWinnerNum.append(i+3)
+            case "Black":
+                laneWinnerNum.append(i+3)
+            case "White":
+                laneWinnerNum.append(i)
+            case "":
+                laneWinnerNum.append(i)
+            default:
+                laneWinnerNum.append(-1)
+            }
+        case "Blue":
+            switch PlayedColors[i+3]{
+            case "Green":
+                laneWinnerNum.append(i+3)
+            case "Blue":
+                laneWinnerNum.append(-1)
+            case "Red":
+                laneWinnerNum.append(i)
+            case "Black":
+                laneWinnerNum.append(i+3)
+            case "White":
+                laneWinnerNum.append(i)
+            case "":
+                laneWinnerNum.append(i)
+            default:
+                laneWinnerNum.append(-1)
+            }
+        case "Red":
+            switch PlayedColors[i+3]{
+            case "Green":
+                laneWinnerNum.append(i)
+            case "Blue":
+                laneWinnerNum.append(i+3)
+            case "Red":
+                laneWinnerNum.append(-1)
+            case "Black":
+                laneWinnerNum.append(i+3)
+            case "White":
+                laneWinnerNum.append(i)
+            case "":
+                laneWinnerNum.append(i)
+            default:
+                laneWinnerNum.append(-1)
+            }
+        case "Black":
+            switch PlayedColors[i+3]{
+            case "Green":
+                laneWinnerNum.append(i)
+            case "Blue":
+                laneWinnerNum.append(i)
+            case "Red":
+                laneWinnerNum.append(i)
+            case "Black":
+                laneWinnerNum.append(-1)
+            case "White":
+                laneWinnerNum.append(i+3)
+            case "":
+                laneWinnerNum.append(i)
+            default:
+                laneWinnerNum.append(-1)
+            }
+        case "White":
+            switch PlayedColors[i+3]{
+            case "Green":
+                laneWinnerNum.append(i+3)
+            case "Blue":
+                laneWinnerNum.append(i+3)
+            case "Red":
+                laneWinnerNum.append(i+3)
+            case "Black":
+                laneWinnerNum.append(i)
+            case "White":
+                laneWinnerNum.append(-1)
+            case "":
+                laneWinnerNum.append(i)
+            default:
+                laneWinnerNum.append(-1)
+            }
+        case "":
+            switch PlayedColors[i+3]{
+            case "Green":
+                laneWinnerNum.append(i+3)
+            case "Blue":
+                laneWinnerNum.append(i+3)
+            case "Red":
+                laneWinnerNum.append(i+3)
+            case "Black":
+                laneWinnerNum.append(i+3)
+            case "White":
+                laneWinnerNum.append(i+3)
+            case "":
+                laneWinnerNum.append(-1)
+            default:
+                laneWinnerNum.append(-1)
+            }
         default:
-            cardColors.append("BROKE")
+            laneWinnerNum.append(-1)
         }
         
-        
     }
+    
+    
     
     
 }

@@ -3,6 +3,14 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "GameScene.touchesMoved(_:with:):GameScene.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "touchedNode.name">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "GameScene.touchesEnded(_:with:):GameScene.swift">
          <PersistentStrings>
             <PersistentString
@@ -12,9 +20,6 @@
                value = "">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "GameScene.touchesMoved(_:with:):GameScene.swift">
       </ContextState>
       <ContextState
          contextName = "GameScene.didMove(to:):GameScene.swift">
@@ -32,6 +37,14 @@
             </PersistentString>
             <PersistentString
                value = "touchedNode.name">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "checkIfCardPlayed(touchedNode:Hand:Placement:Played:colorName:):functions.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Played[Played.count-1].name">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

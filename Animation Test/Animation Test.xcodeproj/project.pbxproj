@@ -12,6 +12,7 @@
 		223DCC0022F3469200CE520D /* init_functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223DCBFF22F3469200CE520D /* init_functions.swift */; };
 		223DCC0222F3552C00CE520D /* functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223DCC0122F3552C00CE520D /* functions.swift */; };
 		223DCC0422F36D9800CE520D /* Placement.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 223DCC0322F36D9800CE520D /* Placement.atlas */; };
+		22F0082222F8D3980030C3C7 /* variables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F0082122F8D3980030C3C7 /* variables.swift */; };
 		22F9B54C22B98774005B4168 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F9B54B22B98774005B4168 /* AppDelegate.swift */; };
 		22F9B54E22B98774005B4168 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 22F9B54D22B98774005B4168 /* GameScene.sks */; };
 		22F9B55022B98774005B4168 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 22F9B54F22B98774005B4168 /* Actions.sks */; };
@@ -29,6 +30,7 @@
 		223DCBFF22F3469200CE520D /* init_functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = init_functions.swift; sourceTree = "<group>"; };
 		223DCC0122F3552C00CE520D /* functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = functions.swift; sourceTree = "<group>"; };
 		223DCC0322F36D9800CE520D /* Placement.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Placement.atlas; sourceTree = "<group>"; };
+		22F0082122F8D3980030C3C7 /* variables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = variables.swift; sourceTree = "<group>"; };
 		22F9B54822B98774005B4168 /* Animation Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Animation Test.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22F9B54B22B98774005B4168 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		22F9B54D22B98774005B4168 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 				22F9B55822B98776005B4168 /* Assets.xcassets */,
 				22F9B55A22B98776005B4168 /* LaunchScreen.storyboard */,
 				22F9B55D22B98776005B4168 /* Info.plist */,
+				22F0082122F8D3980030C3C7 /* variables.swift */,
 			);
 			path = "Animation Test";
 			sourceTree = "<group>";
@@ -169,6 +172,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				22F9B55222B98774005B4168 /* GameScene.swift in Sources */,
+				22F0082222F8D3980030C3C7 /* variables.swift in Sources */,
 				223DCC0222F3552C00CE520D /* functions.swift in Sources */,
 				22F9B55422B98774005B4168 /* GameViewController.swift in Sources */,
 				22F9B54C22B98774005B4168 /* AppDelegate.swift in Sources */,

@@ -11,6 +11,7 @@ import GameplayKit
 
 class GameScene: SKScene {
     
+    
     var recognizer = UITapGestureRecognizer()
     
     var TextureAtlas = SKTextureAtlas()
@@ -29,6 +30,8 @@ class GameScene: SKScene {
     
     var Played:[SKSpriteNode] = [SKSpriteNode]()
     
+    var computerHand = [SKSpriteNode]()
+    
     var Hand : [SKSpriteNode] = [SKSpriteNode]()
     var stackNum = Int()
     var colorNum = [Int]()
@@ -41,8 +44,11 @@ class GameScene: SKScene {
     var lightNode = SKLightNode()
     
     var round = 0
-    var playerDraw = 2
+    let playerDraw = 2
     var didPlayerRedraw = false
+    
+    
+    
     
     override func didMove(to: SKView){
         /* Setup scene here*/
@@ -86,6 +92,10 @@ class GameScene: SKScene {
         self.addChild(Background)
         self.addChild(Hand[0])
         self.addChild(lightNode)
+        
+        var currentscene = self
+        
+        startHand(GeneralHand: &Hand, GameScene: &currentscene, HandTextureAtlas: &HandTextureAtlas, stackNum: stackNum, colorName: &colorName, colorNum: colorNum)
         
         for place in Placement{
             self.addChild(place)
@@ -146,6 +156,8 @@ class GameScene: SKScene {
                 }
                     }
             
+            placeCardsInHand(Hand: &Hand)
+            
                 didPlayerRedraw = false
             }
             
@@ -167,20 +179,20 @@ class GameScene: SKScene {
         
         if let name = touchedNode.name
         {
-            if name == "Stack"
-            {
-                lightNode.isEnabled = true
-                lightNode.position = Hand[0].position
-                
-                createCard(Hand: &Hand, HandTextureAtlas: &HandTextureAtlas, stackNum: stackNum, colorName: &colorName, colorNum: colorNum)
-                
-                print(Hand.count-1)
-                print(colorNum.count)
-                self.addChild(Hand[Hand.count-1])
-               
-                
-            }
-            else if name == "MainGuy"{
+//            if name == "Stack"
+//            {
+//                lightNode.isEnabled = true
+//                lightNode.position = Hand[0].position
+//
+//                createCard(Hand: &Hand, HandTextureAtlas: &HandTextureAtlas, stackNum: stackNum, colorName: &colorName, colorNum: colorNum)
+//
+//                print(Hand.count-1)
+//                print(colorNum.count)
+//                self.addChild(Hand[Hand.count-1])
+//
+//
+//            }
+             if name == "MainGuy"{
                 MainGuy.run(SKAction.repeatForever(SKAction.animate(with: TextureArray, timePerFrame: 0.05)))
             }
             
@@ -266,28 +278,26 @@ class GameScene: SKScene {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         lightNode.isEnabled = false
+        let touch:UITouch = touches.first!
+        let positionInScene = touch.location(in: self)
+        touchedNode = self.atPoint(positionInScene) as! SKSpriteNode
         
-        print(self.scene?.children)
-        checkIfCardPlayed(touchedNode: &touchedNode, Hand: &Hand, Placement: &Placement, Played: &Played, colorName: &colorName)
+        var currentscene = self
         
-        if(Hand.count >= 2){
-            for card in Hand{
-                if(card != Hand[0]){
-                    card.scale(to: CGSize(width: 162, height: 299))
-                    card.zPosition = 4
-                    let currentCard = Hand.firstIndex(of: card)!
-                    let moveToHand = SKAction .move(to: CGPoint(x:125 + (-50 * ((Hand.count-1) - currentCard)), y:-475), duration: 0.1)
-                  //  let shrink = SKAction .resize(toWidth: (CGFloat(262 / ((Hand.count)))), height: (399), duration: 0.1)
-                    card.run(moveToHand)
-               //     card.run(shrink)
-                    print(card.position)
-                    
-                }
-                card.lightingBitMask = 1
-            }
+        if touchedNode.name == "MainGuy"{
+            round += 1
             
-        }
+            drawCardsforHand(GeneralHand: &Hand, GameScene: &currentscene, HandTextureAtlas: &HandTextureAtlas, stackNum: stackNum, colorName: &colorName, colorNum: colorNum, numOfCardsToDraw: playerDraw)
+        }else{
         
+            checkIfCardPlayed(touchedNode: &touchedNode, Hand: &Hand,scene: &currentscene, Placement: &Placement, Played: &Played, colorName: &colorName)
+        
+        placeCardsInHand(Hand: &Hand)
+        }
+        calculatePlayedCards(Played: Played, HandTextureAtlas: &HandTextureAtlas)
+        print(self.scene?.children)
+        print("&", round, "&")
+        print("-", touchedNode.name, "-")
     }
     
     

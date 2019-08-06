@@ -11,6 +11,17 @@ import SpriteKit
 import GameplayKit
 
 class GameViewController: UIViewController {
+    
+    var computerCurrentHP = Int()
+    var playerCurrentHP = Int()
+    
+    var computerTotalHP = 5
+    var playerTotalHP = 5
+    
+    var totalRoundNum = Int()
+    var currentRoundNum =  Int()
+    var playerTurn = Bool()
+    var computerTurn = Bool()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,20 +54,38 @@ class GameViewController: UIViewController {
         
     }
     override func viewDidAppear(_ animated: Bool) {
-      var scene = mainGame()
-        scene.Hand[0].position = CGPoint(x:0,y:0)
+       mainGame()
+
+        
+        computerCurrentHP = computerTotalHP
+        playerCurrentHP = playerTotalHP
+        
+       var playerHPLabel = SKLabelNode()
+        playerHPLabel.fontColor = .black
+        playerHPLabel.text = "\(playerCurrentHP)"
+        playerHPLabel.fontSize = 50
+        playerHPLabel.position = CGPoint(x:0, y:0)
+        playerHPLabel.zPosition = 10
+        
+       
+//        let viewScene = self.view as? SKView
+//        viewScene!.presentScene(scene)
+        
+  
+        
     }
 
-    func mainGame() -> GameScene{
+    func mainGame(){
         var scene =  GameScene()
         let ControllerView = self.view as! SKView
         
         
         scene.didMove(to: ControllerView)
         
-        return  scene
-        }
         
+        }
+    
+   
     
     
     override var shouldAutorotate: Bool {

@@ -18,7 +18,7 @@ func initArrays( HandTextureArray: inout [SKTexture]){
     HandTextureArray.append(SKTexture(imageNamed: "Green_card.png"))
 }
 
-func initMainNodes(Background: inout SKSpriteNode, MainGuy:  inout SKSpriteNode, Hand: inout [SKSpriteNode], lightNode: inout SKLightNode, TextureAtlas: SKTextureAtlas, TextureAtlas1: SKTextureAtlas, HandTextureAtlas: SKTextureAtlas, stackNum: Int, playerHPLabelNode: inout SKLabelNode, playerHPLabelSpriteNode: inout SKSpriteNode){
+func initMainNodes(Background: inout SKSpriteNode, MainGuy:  inout SKSpriteNode, Hand: inout [SKSpriteNode], lightNode: inout SKLightNode, TextureAtlas: SKTextureAtlas, TextureAtlas1: SKTextureAtlas, HandTextureAtlas: SKTextureAtlas, stackNum: Int, playerHPLabelNode: inout SKLabelNode, playerHPLabelSpriteNode: inout SKSpriteNode, computerHPLabelNode: inout SKLabelNode, computerHPLabelSpriteNode: inout SKSpriteNode, roundLabelNode: inout SKLabelNode, roundLabelSpriteNode: inout SKSpriteNode){
     
     MainGuy = SKSpriteNode(imageNamed: TextureAtlas.textureNames[0] )
     
@@ -60,12 +60,42 @@ func initMainNodes(Background: inout SKSpriteNode, MainGuy:  inout SKSpriteNode,
     playerHPLabelNode.fontColor = .black
     playerHPLabelNode.position = CGPoint(x: 0,y: -playerHPLabelNode.frame.size.height/2)
     playerHPLabelNode.zPosition = 5
+    playerHPLabelNode.name = "PLAYERHPLABEL"
     
     playerHPLabelSpriteNode = SKSpriteNode(color: .white, size: Hand[0].size)
     playerHPLabelSpriteNode.zPosition = 5
     playerHPLabelSpriteNode.position = Hand[0].position
-    playerHPLabelSpriteNode.name = "HPLABEL"
+    playerHPLabelSpriteNode.name = "PLAYERHPLABELSPRITENODE"
     [playerHPLabelSpriteNode .addChild(playerHPLabelNode)]
+    
+    computerHPLabelNode = SKLabelNode(text: "5")
+    computerHPLabelNode.fontSize = 150
+    computerHPLabelNode.fontName = "Times New Roman"
+    computerHPLabelNode.fontColor = .black
+    computerHPLabelNode.position = CGPoint(x: 0,y: -computerHPLabelNode.frame.size.height/2)
+    computerHPLabelNode.zPosition = 5
+    computerHPLabelNode.name = "COMPUTERHPLABEL"
+    
+    computerHPLabelSpriteNode = SKSpriteNode(color: .white, size: CGSize(width: 150, height:150))
+    computerHPLabelSpriteNode.zPosition = 5
+    computerHPLabelSpriteNode.position = CGPoint(x: -275, y:550)
+    computerHPLabelSpriteNode.name = "COMPUTERHPLABELSPRITENODE"
+    [computerHPLabelSpriteNode .addChild(computerHPLabelNode)]
+    
+    roundLabelNode = SKLabelNode(text: "1")
+    roundLabelNode.fontSize = 75
+    roundLabelNode.fontColor = .black
+    roundLabelNode.position = CGPoint(x: 0, y: -roundLabelNode.frame.size.height/2)
+    roundLabelNode.zPosition = 1
+    roundLabelNode.name = "ROUNDLABEL"
+    
+    roundLabelSpriteNode  = SKSpriteNode(color: .white, size: CGSize(width: MainGuy.size.width, height: MainGuy.size.height))
+    roundLabelSpriteNode.zPosition = 1
+    roundLabelSpriteNode.position = CGPoint(x: MainGuy.position.x, y: MainGuy.position.y - 100)
+    roundLabelSpriteNode.name = "ROUNDLABELSPRITENODE"
+    [roundLabelSpriteNode .addChild(roundLabelNode)]
+    
+    
 }
 
 

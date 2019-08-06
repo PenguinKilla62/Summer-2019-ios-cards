@@ -55,17 +55,6 @@ class GameViewController: UIViewController {
     }
     override func viewDidAppear(_ animated: Bool) {
        mainGame()
-
-        
-        computerCurrentHP = computerTotalHP
-        playerCurrentHP = playerTotalHP
-        
-       var playerHPLabel = SKLabelNode()
-        playerHPLabel.fontColor = .black
-        playerHPLabel.text = "\(playerCurrentHP)"
-        playerHPLabel.fontSize = 50
-        playerHPLabel.position = CGPoint(x:0, y:0)
-        playerHPLabel.zPosition = 10
         
        
 //        let viewScene = self.view as? SKView

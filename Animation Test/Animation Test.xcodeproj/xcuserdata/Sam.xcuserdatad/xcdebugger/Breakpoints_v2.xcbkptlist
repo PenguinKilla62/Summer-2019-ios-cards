@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Animation Test/GameScene.swift"
-            timestampString = "586810575.546652"
+            timestampString = "586828375.349836"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
+            startingLineNumber = "69"
+            endingLineNumber = "69"
             landmarkName = "didMove(to:)"
             landmarkType = "7">
          </BreakpointContent>

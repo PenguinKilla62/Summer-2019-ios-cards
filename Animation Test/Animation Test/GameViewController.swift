@@ -63,6 +63,7 @@ class GameViewController: UIViewController {
   
         
     }
+    
 
     func mainGame(){
         var scene =  GameScene()
@@ -71,10 +72,15 @@ class GameViewController: UIViewController {
         
         scene.didMove(to: ControllerView)
         
-        
+        self.navigationController?.pushViewController(StartingPointViewController(), animated: true)
         }
     
-   
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "StartingPoint"{
+            let startViewController = segue.destination as! StartingPointViewController
+            startViewController.title = "Home"
+        }
+    }
     
     
     override var shouldAutorotate: Bool {

@@ -13,23 +13,26 @@
         <!--Game View Controller-->
         <scene sceneID="tXr-a1-R10">
             <objects>
-                <viewController id="BV1-FR-VrT" customClass="GameViewController" customModule="Animation_Test" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GameScene" id="BV1-FR-VrT" customClass="GameViewController" customModule="Animation_Test" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="3se-qz-xqx" customClass="SKView">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="4qk-I5-YsI"/>
                     </view>
+                    <connections>
+                        <segue destination="ZPh-5x-exO" kind="show" id="e4m-gR-lmm"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1688" y="104"/>
+            <point key="canvasLocation" x="2114" y="104"/>
         </scene>
-        <!--View Controller-->
+        <!--Starting Point-->
         <scene sceneID="Pbx-Ke-Nlu">
             <objects>
-                <viewController id="ZPh-5x-exO" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="g22-aJ-lr4">
+                <viewController storyboardIdentifier="StartingPoint" title="Starting Point" id="ZPh-5x-exO" customClass="StartingPointViewController" customModule="Animation_Test" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="g22-aJ-lr4" customClass="StartingPointView" customModule="Animation_Test" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -52,6 +55,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="nuX-c6-3sp"/>
+                        <connections>
+                            <outlet property="Buttom" destination="8ft-X7-F2f" id="JST-d5-T3f"/>
+                            <outlet property="Label" destination="c7H-MZ-hwY" id="Nzv-TI-JSV"/>
+                        </connections>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="feT-vQ-Ccs" userLabel="First Responder" sceneMemberID="firstResponder"/>

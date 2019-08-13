@@ -65,6 +65,8 @@ class GameScene: SKScene {
     var computerHPLabelNode = SKLabelNode()
     var computerHpLabelSpriteNode = SKSpriteNode()
     
+    var endGameLabel = SKLabelNode()
+    var endGameLabelNode = SKSpriteNode()
     
     override func didMove(to: SKView){
         /* Setup scene here*/
@@ -290,7 +292,7 @@ class GameScene: SKScene {
             }
             
             var isHand = false
-            for i in 1...Hand.count-1{
+            for i in 1...Hand.count{
                 if touchedNode.name == "color\(i)"{
                     isHand = true
                 }
@@ -318,6 +320,7 @@ class GameScene: SKScene {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
         lightNode.isEnabled = false
         let touch:UITouch = touches.first!
         let positionInScene = touch.location(in: self)
@@ -329,7 +332,7 @@ class GameScene: SKScene {
             var currentscene = self
             
             var isHand = false
-            for i in 1...Hand.count-1{
+            for i in 1...Hand.count{
                 if touchedNode.name == "color\(i)"{
                     isHand = true
                 }
@@ -347,7 +350,6 @@ class GameScene: SKScene {
                 
                 placeCardsInHand(Hand: &Hand)
             }
-            isComputerTurnOver = true
             if(isPlayerTurnOver == true && isComputerTurnOver == true){
             var laneWinnerNum = calculatePlayedCards(Played: &Played, PlayedColors: &PlayedColors)
                 finishRound(isPlayerTurnOver: &isPlayerTurnOver, isComputerTurnOver: &isComputerTurnOver, roundLabelSpriteNode: &roundLabelSpriteNode, Played: &Played, laneWinnerNum: laneWinnerNum, playerHPLabelSpriteNode: &playerHPLabelSpriteNode, computerHPLabelSpriteNode: &computerHpLabelSpriteNode, scene: &currentscene)
@@ -355,14 +357,42 @@ class GameScene: SKScene {
             if isPlayerTurnOver == true && isComputerTurnOver == false{
                 computerTurn(computerHand: &opponentHand, computerHandColors: &opponentHandColors, Played: &Played, PlayedColors: &PlayedColors)
                 isComputerTurnOver = true
+                
+                var laneWinnerNum = calculatePlayedCards(Played: &Played, PlayedColors: &PlayedColors)
+                finishRound(isPlayerTurnOver: &isPlayerTurnOver, isComputerTurnOver: &isComputerTurnOver, roundLabelSpriteNode: &roundLabelSpriteNode, Played: &Played, laneWinnerNum: laneWinnerNum, playerHPLabelSpriteNode: &playerHPLabelSpriteNode, computerHPLabelSpriteNode: &computerHpLabelSpriteNode, scene: &currentscene)
             }
+            let viewcontroller = StartingPointViewController()
+            self.view?.willMove(toWindow: UIWindow(frame: viewcontroller.accessibilityFrame))
+//            if true {
+//                let scene = StartingPointViewController()
+//                let ControllerView = self.view as! UIViewController
+//
+//
+//
+//                let storyboard = UIStoryboard(name:"Storyboard", bundle: nil)
+//                let startViewController = storyboard.instantiateViewController(withIdentifier: "StartingPoint") as! StartingPointViewController
+//                startViewController.title = "StartingPoint"
+//
+//            }
             
+//            var dumView = SKView(frame: CGRect())
+//            self.view?.willRemoveSubview(self.view!)
+            var dumUIView = StartingPointView()
+            self.view?.addSubview(dumUIView)
+            self.view?.willMove(toSuperview: dumUIView)
+            self.view?.didMoveToSuperview()
+            print(self.view?.subviews.count)
+            self.view?.exchangeSubview(at: 0, withSubviewAt: 1)
+            self.view?.superview?.willMove(toSuperview: dumUIView)
+            
+            self.view?.superview?.didMoveToSuperview()
             
             print(self.scene?.children)
             print("&", round, "&")
             //print("-", touchedNode.name, "-")
         }
     }
+    
     
     
     

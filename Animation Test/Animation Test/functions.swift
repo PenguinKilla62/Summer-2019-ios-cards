@@ -20,6 +20,14 @@ func stackToHand(Hand: inout[SKSpriteNode]){
     
 }
 
+func opponentStackToHand(Hand: inout[SKSpriteNode]){
+    var newCard = Hand[Hand.count-1]
+    
+    let moveToHand = SKAction .move(to: CGPoint(x:0, y:525), duration: 0.1)
+    newCard.run(moveToHand)
+    
+}
+
 func checkIfCardPlayed(touchedNode: inout SKSpriteNode, Hand: inout [SKSpriteNode], scene: inout GameScene,Placement: inout [SKSpriteNode], Played: inout [SKSpriteNode], colorName: inout Int, HandColors: inout [String], PlayedColors: inout [String]){
     
     var isHand = false
@@ -125,6 +133,26 @@ func placeCardsInHand(Hand: inout [SKSpriteNode]){
     }
 }
 
+func placeOpponentCardsInHand(Hand: inout [SKSpriteNode]){
+    if(Hand.count >= 2){
+        for card in Hand{
+            if(card != Hand[0]){
+                card.scale(to: CGSize(width: 162, height: 299))
+                card.zPosition = 4
+                let currentCard = Hand.firstIndex(of: card)!
+                let moveToHand = SKAction .move(to: CGPoint(x:125 + (-50 * ((Hand.count-1) - currentCard)), y:525), duration: 0.1)
+                //  let shrink = SKAction .resize(toWidth: (CGFloat(262 / ((Hand.count)))), height: (399), duration: 0.1)
+                card.run(moveToHand)
+                //     card.run(shrink)
+                print(card.position)
+                
+            }
+            card.lightingBitMask = 1
+        }
+        
+    }
+}
+
 func figureColorOfCard(HandtextureAtlas: inout SKTextureAtlas, validNum: Int, HandColors: inout [String]){
     
     switch HandtextureAtlas.textureNames[validNum]{
@@ -175,12 +203,21 @@ func createCard(Hand: inout [SKSpriteNode], HandTextureAtlas: inout SKTextureAtl
     if isComputer == false{
     stackToHand(Hand: &Hand)
     }
+    else{
+        opponentStackToHand(Hand: &Hand)
+    }
     Hand[Hand.count-1].zPosition = 4
     Hand[Hand.count-1].shadowedBitMask = 1
     Hand[Hand.count-1].shadowCastBitMask = 0
     Hand[Hand.count-1].lightingBitMask = 1
-    Hand[Hand.count-1].name = "color\(Hand.count-1)"
-    colorName += 1
+    
+    if isComputer == false{
+        Hand[Hand.count-1].name = "color\(Hand.count-1)"
+        colorName += 1
+    }
+    else{
+        Hand[Hand.count-1].name = "Ccolor\(Hand.count-1)"
+    }
     Hand[Hand.count-1].isUserInteractionEnabled = false
 }
 
@@ -193,6 +230,9 @@ func startHand(GeneralHand: inout [SKSpriteNode], GameScene: inout GameScene, Ha
     if isComputer == false{
     placeCardsInHand(Hand: &GeneralHand)
     }
+    else{
+        placeOpponentCardsInHand(Hand: &GeneralHand)
+    }
     
 }
 
@@ -204,6 +244,9 @@ func drawCardsforHand(GeneralHand: inout [SKSpriteNode], GameScene: inout GameSc
     }
     if isComputer == false{
     placeCardsInHand(Hand: &GeneralHand)
+    }
+    else{
+        placeOpponentCardsInHand(Hand: &GeneralHand)
     }
     
 }
@@ -368,6 +411,17 @@ func computerTurn(computerHand: inout [SKSpriteNode], computerHandColors: inout 
     while hold < numOfCardsToPlace{
         
         var numToBePlaced = Int.random(in: 0...2)
+        var cardsFull = true
+        for i in 0...numOfCardsToPlace-1{
+            if(isCardPlacedThere[i] == false){
+                cardsFull = false
+            }
+        }
+        
+        if cardsFull == true{
+            hold = numOfCardsToPlace
+        }
+        
         if isCardPlacedThere[numToBePlaced] == false{
             
             var numCardToBePlaced = Int.random(in: 0...computerHand.count-1)
@@ -376,6 +430,7 @@ func computerTurn(computerHand: inout [SKSpriteNode], computerHandColors: inout 
                     numCardToBePlaced != placesCardsArePlaced[1] &&
                     numCardToBePlaced != placesCardsArePlaced[2] {
                     breakWhile = true
+                    hold += 1
                 }
                 else{
                     numCardToBePlaced = Int.random(in: 0...computerHand.count-1)
@@ -383,7 +438,7 @@ func computerTurn(computerHand: inout [SKSpriteNode], computerHandColors: inout 
             }
                 
             placesCardsArePlaced[numToBePlaced] = numCardToBePlaced
-            isCardPlacedThere[numCardToBePlaced] = true
+            isCardPlacedThere[numToBePlaced] = true
             }
         }
     
@@ -435,11 +490,34 @@ func finishRound(isPlayerTurnOver: inout Bool, isComputerTurnOver: inout Bool, r
             var currentGameState = isGameFinished(playerHPnum: playerHPnum, computerHPnum: computerHPnum)
             switch currentGameState{
             case "Player":
-                1+1 // transition
+                currentRoundNum += 1
+                (roundLabelSpriteNode.childNode(withName: "ROUNDLABEL") as! SKLabelNode).text = String(currentRoundNum)
+                ()
+                isPlayerTurnOver = false
+                isComputerTurnOver = false
+                (playerHPLabelSpriteNode.childNode(withName: "PLAYERHPLABEL") as! SKLabelNode).text = String(playerHPnum)
+                (computerHPLabelSpriteNode.childNode(withName: "COMPUTERHPLABEL") as! SKLabelNode).text = String(computerHPnum)
+                
+                
+                
+                
+                
             case "Computer":
-                1+1 // transition
+                currentRoundNum += 1
+                (roundLabelSpriteNode.childNode(withName: "ROUNDLABEL") as! SKLabelNode).text = String(currentRoundNum)
+                ()
+                isPlayerTurnOver = false
+                isComputerTurnOver = false
+                (playerHPLabelSpriteNode.childNode(withName: "PLAYERHPLABEL") as! SKLabelNode).text = String(playerHPnum)
+                (computerHPLabelSpriteNode.childNode(withName: "COMPUTERHPLABEL") as! SKLabelNode).text = String(computerHPnum)
             case "Tie":
-                1+1 // transition
+                currentRoundNum += 1
+                (roundLabelSpriteNode.childNode(withName: "ROUNDLABEL") as! SKLabelNode).text = String(currentRoundNum)
+                ()
+                isPlayerTurnOver = false
+                isComputerTurnOver = false
+                (playerHPLabelSpriteNode.childNode(withName: "PLAYERHPLABEL") as! SKLabelNode).text = String(playerHPnum)
+                (computerHPLabelSpriteNode.childNode(withName: "COMPUTERHPLABEL") as! SKLabelNode).text = String(computerHPnum)
             default:
                 currentRoundNum += 1
                 (roundLabelSpriteNode.childNode(withName: "ROUNDLABEL") as! SKLabelNode).text = String(currentRoundNum)

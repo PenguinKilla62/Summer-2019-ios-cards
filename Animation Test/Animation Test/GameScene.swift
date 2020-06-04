@@ -29,16 +29,13 @@ class GameScene: SKScene {
     var PlacementTexture = SKTexture()
     
     var Played = [SKSpriteNode(), SKSpriteNode(), SKSpriteNode(),
-                  SKSpriteNode(), SKSpriteNode(), SKSpriteNode()]
+                SKSpriteNode(), SKSpriteNode(), SKSpriteNode()]
     var PlayedColors = ["","","","","",""]
     
     var computerHand = [SKSpriteNode]()
     
     var Hand : [SKSpriteNode] = [SKSpriteNode]()
     var HandColors = [String]()
-    
-    var opponentHand = [SKSpriteNode]()
-    var opponentHandColors = [String]()
     
     var stackNum = Int()
     var colorNum = [Int]()
@@ -50,20 +47,12 @@ class GameScene: SKScene {
     
     var lightNode = SKLightNode()
     
-    var round = 1
+    var round = 0
     let playerDraw = 2
-    let opponentDraw = 2
     var didPlayerRedraw = false
     
-    var isPlayerTurnOver = false
-    var isComputerTurnOver = false
-    
-    var roundLabelNode = SKLabelNode()
-    var roundLabelSpriteNode = SKSpriteNode()
     var playerHPLabelNode = SKLabelNode()
     var playerHPLabelSpriteNode = SKSpriteNode()
-    var computerHPLabelNode = SKLabelNode()
-    var computerHpLabelSpriteNode = SKSpriteNode()
     
     var endGameLabel = SKLabelNode()
     var endGameLabelNode = SKSpriteNode()
@@ -106,25 +95,23 @@ class GameScene: SKScene {
         initArrays(HandTextureArray: &HandTextureArray)
         
         
-        initMainNodes(Background: &Background, MainGuy: &MainGuy, Hand: &Hand, lightNode: &lightNode, TextureAtlas: TextureAtlas, TextureAtlas1: TextureAtlas1, HandTextureAtlas: HandTextureAtlas, stackNum: stackNum, playerHPLabelNode: &playerHPLabelNode, playerHPLabelSpriteNode: &playerHPLabelSpriteNode, computerHPLabelNode: &computerHPLabelNode, computerHPLabelSpriteNode: &computerHpLabelSpriteNode, roundLabelNode: &roundLabelNode, roundLabelSpriteNode: &roundLabelSpriteNode)
+        initMainNodes(Background: &Background, MainGuy: &MainGuy, Hand: &Hand, lightNode: &lightNode, TextureAtlas: TextureAtlas, TextureAtlas1: TextureAtlas1, HandTextureAtlas: HandTextureAtlas, stackNum: stackNum, playerHPLabelNode: &playerHPLabelNode, playerHPLabelSpriteNode: &playerHPLabelSpriteNode)
         
         self.addChild(MainGuy)
         self.addChild(Background)
-        // self.addChild(Hand[0])
+       // self.addChild(Hand[0])
         self.addChild(lightNode)
         self.addChild(playerHPLabelSpriteNode)
-        self.addChild(computerHpLabelSpriteNode)
-        self.addChild(roundLabelSpriteNode)
         
         var currentscene = self
         
-        startHand(GeneralHand: &Hand, GameScene: &currentscene, HandTextureAtlas: &HandTextureAtlas, stackNum: stackNum, colorName: &colorName, colorNum: colorNum, HandColors: &HandColors, isComputer: Bool(false))
-        startHand(GeneralHand: &opponentHand, GameScene: &currentscene, HandTextureAtlas: &HandTextureAtlas, stackNum: stackNum, colorName: &colorName, colorNum: colorNum, HandColors: &opponentHandColors, isComputer: Bool(true))
+        startHand(GeneralHand: &Hand, GameScene: &currentscene, HandTextureAtlas: &HandTextureAtlas, stackNum: stackNum, colorName: &colorName, colorNum: colorNum, HandColors: &HandColors)
+        
         for place in Placement{
             self.addChild(place)
         }
         
-        
+
         
         
     }
@@ -169,29 +156,27 @@ class GameScene: SKScene {
                 print(self.children.count, "]")
                 
             }
-            didPlayerRedraw = false
+            didPlayerRedraw = true
             
-            if didPlayerRedraw == false{
+            if didPlayerRedraw == true{
                 
                 
-                while Hand.count-1 < (currentNumOfCardsToBeRedrawn) {
-                    createCard(Hand: &Hand, HandTextureAtlas: &HandTextureAtlas, stackNum: stackNum, colorName: &colorName, colorNum: colorNum, HandColors: &HandColors, isComputer: false)
-                }
+                        while Hand.count-1 < (currentNumOfCardsToBeRedrawn) {
+                            createCard(Hand: &Hand, HandTextureAtlas: &HandTextureAtlas, stackNum: stackNum, colorName: &colorName, colorNum: colorNum, HandColors: &HandColors)
+                        }
                 for i in 0...Hand.count-1{
                     if i != 0{
                         self.addChild(Hand[i])
                     }
                 }
-                placeCardsInHand(Hand: &Hand)
-                didPlayerRedraw = true
+                    }
+            
+            placeCardsInHand(Hand: &Hand)
+            
+                didPlayerRedraw = false
             }
             
-            
-            
-            
         }
-        
-    }
     
     
     
@@ -201,64 +186,64 @@ class GameScene: SKScene {
         let positionInScene = touch.location(in: self)
         
         if self.atPoint(positionInScene) as? SKSpriteNode != nil{
-            touchedNode = self.atPoint(positionInScene) as! SKSpriteNode
+        touchedNode = self.atPoint(positionInScene) as! SKSpriteNode
+        
+        
+        
+        for touch: AnyObject in touches {
+            let touchLocation = touch.location(in: self)
+            lastTouched = touchLocation
+        }
+        
+        
+        if let name = touchedNode.name
+        {
+//            if name == "Stack"
+//            {
+//                lightNode.isEnabled = true
+//                lightNode.position = Hand[0].position
+//
+//                createCard(Hand: &Hand, HandTextureAtlas: &HandTextureAtlas, stackNum: stackNum, colorName: &colorName, colorNum: colorNum)
+//
+//                print(Hand.count-1)
+//                print(colorNum.count)
+//                self.addChild(Hand[Hand.count-1])
+//
+//
+//            }
+             if name == "MainGuy"{
+                MainGuy.run(SKAction.repeatForever(SKAction.animate(with: TextureArray, timePerFrame: 0.05)))
+            }
             
+            var isColorNodeSelected = false
+            var currentNodeSelectedNum = 0
             
-            
-            for touch: AnyObject in touches {
-                let touchLocation = touch.location(in: self)
-                lastTouched = touchLocation
+            for i in 0...colorName{
+                if (name == "color\(i)"){
+                    isColorNodeSelected = true
+                    currentNodeSelectedNum = i+1;
+                }
             }
             
             
-            if let name = touchedNode.name
-            {
-                //            if name == "Stack"
-                //            {
-                //                lightNode.isEnabled = true
-                //                lightNode.position = Hand[0].position
-                //
-                //                createCard(Hand: &Hand, HandTextureAtlas: &HandTextureAtlas, stackNum: stackNum, colorName: &colorName, colorNum: colorNum)
-                //
-                //                print(Hand.count-1)
-                //                print(colorNum.count)
-                //                self.addChild(Hand[Hand.count-1])
-                //
-                //
-                //            }
-                if name == "MainGuy"{
-                    MainGuy.run(SKAction.repeatForever(SKAction.animate(with: TextureArray, timePerFrame: 0.05)))
-                }
+            if (isColorNodeSelected == true) {
+                touchedNode.position.x = lastTouched.x
+                touchedNode.position.y = lastTouched.y
                 
-                var isColorNodeSelected = false
-                var currentNodeSelectedNum = 0
+                currentNodeSelectedNum = Hand.firstIndex(of: touchedNode)!
                 
-                for i in 0...colorName{
-                    if (name == "color\(i)"){
-                        isColorNodeSelected = true
-                        currentNodeSelectedNum = i+1;
+                for card in Hand{
+                    if(card != Hand[currentNodeSelectedNum]  && card != Hand[0]){
+                        card.scale(to: CGSize(width: 162, height: 299))
+                        card.zPosition = 3
                     }
                 }
                 
                 
-                if (isColorNodeSelected == true) {
-                    touchedNode.position.x = lastTouched.x
-                    touchedNode.position.y = lastTouched.y
-                    
-                    currentNodeSelectedNum = Hand.firstIndex(of: touchedNode)!
-                    
-                    for card in Hand{
-                        if(card != Hand[currentNodeSelectedNum]  && card != Hand[0]){
-                            card.scale(to: CGSize(width: 162, height: 299))
-                            card.zPosition = 3
-                        }
-                    }
-                    
-                    
-                }
-                print(touchedNode.name)
-                print(self.childNode(withName: "color"))
             }
+            print(touchedNode.name)
+            print(self.childNode(withName: "color"))
+        }
         }
     }
     
@@ -269,53 +254,58 @@ class GameScene: SKScene {
         
         let touch:UITouch = touches.first!
         let positionInScene = touch.location(in: self)
-        if self.atPoint(positionInScene) as? SKSpriteNode != nil{
-            touchedNode = self.atPoint(positionInScene) as! SKSpriteNode
-            
-            for touch: AnyObject in touches {
-                let touchLocation = touch.location(in: self)
-                lastTouched = touchLocation
+         if self.atPoint(positionInScene) as? SKSpriteNode != nil{
+        touchedNode = self.atPoint(positionInScene) as! SKSpriteNode
+        
+        for touch: AnyObject in touches {
+            let touchLocation = touch.location(in: self)
+            lastTouched = touchLocation
+        }
+        var isPlacement = false
+        for i in 0...5{
+            if touchedNode.name == "Placement\(i)"{
+                isPlacement = true
             }
-            var isPlacement = false
-            for i in 0...5{
-                if touchedNode.name == "Placement\(i)"{
-                    isPlacement = true
-                }
-            }
-            
-            var isPlayed = false
-            for i in 0...(Played.count){
-                if touchedNode.name == "Played\(i)"{
-                    isPlayed = true
-                }
-                
+        }
+        
+        var isPlayed = false
+        for i in 0...(Played.count){
+            if touchedNode.name == "Played\(i)"{
+                isPlayed = true
             }
             
+        }
+            
+<<<<<<< HEAD
             var isHand = false
             for i in 1...Hand.count{
+=======
+        var isHand = false
+            for i in 1...Hand.count-1{
+>>>>>>> parent of 05dd643... Added Rounds, Unfinished Calculations
                 if touchedNode.name == "color\(i)"{
                     isHand = true
                 }
             }
+        
+        if(isHand == true){
+            touchedNode.position = lastTouched
+            lightNode.position = touchedNode.position
+            touchedNode.shadowedBitMask = 0
+            currentNodeSelectedNum = Hand.firstIndex(of: touchedNode)!
+            Hand[currentNodeSelectedNum].scale(to: CGSize(width: 270, height: 498))
+            lightNode.isEnabled = true
+            touchedNode.lightingBitMask = 0
             
-            if(isHand == true){
-                touchedNode.position = lastTouched
-                lightNode.position = touchedNode.position
-                touchedNode.shadowedBitMask = 0
-                currentNodeSelectedNum = Hand.firstIndex(of: touchedNode)!
-                Hand[currentNodeSelectedNum].scale(to: CGSize(width: 270, height: 498))
-                lightNode.isEnabled = true
-                touchedNode.lightingBitMask = 0
-                
-                for card in Hand{
-                    if(card != Hand[0] && card != touchedNode){
-                        let currentCard = Hand.firstIndex(of: card)!
-                        let moveToHand = SKAction .move(to: CGPoint(x:150 + (-50 * ((Hand.count-1) - currentCard)), y:-475), duration: 0.1)
-                        
-                        card.run(moveToHand)
-                    }
+            for card in Hand{
+                if(card != Hand[0] && card != touchedNode){
+                    let currentCard = Hand.firstIndex(of: card)!
+                    let moveToHand = SKAction .move(to: CGPoint(x:150 + (-50 * ((Hand.count-1) - currentCard)), y:-475), duration: 0.1)
+                    
+                    card.run(moveToHand)
                 }
             }
+        }
         }
     }
     
@@ -325,19 +315,28 @@ class GameScene: SKScene {
         let touch:UITouch = touches.first!
         let positionInScene = touch.location(in: self)
         
-        if self.atPoint(positionInScene) as? SKSpriteNode != nil{
-            touchedNode = self.atPoint(positionInScene) as! SKSpriteNode
+         if self.atPoint(positionInScene) as? SKSpriteNode != nil{
+        touchedNode = self.atPoint(positionInScene) as! SKSpriteNode
+        
+        
+        var currentscene = self
             
-            
-            var currentscene = self
-            
+<<<<<<< HEAD
             var isHand = false
             for i in 1...Hand.count{
+=======
+        var isHand = false
+            for i in 1...Hand.count-1{
+>>>>>>> parent of 05dd643... Added Rounds, Unfinished Calculations
                 if touchedNode.name == "color\(i)"{
                     isHand = true
                 }
             }
+        
+        if touchedNode.name == "MainGuy"{
+            round += 1
             
+<<<<<<< HEAD
             if touchedNode.name == "MainGuy"{
                 isPlayerTurnOver = true
                 
@@ -390,6 +389,19 @@ class GameScene: SKScene {
             print(self.scene?.children)
             print("&", round, "&")
             //print("-", touchedNode.name, "-")
+=======
+            drawCardsforHand(GeneralHand: &Hand, GameScene: &currentscene, HandTextureAtlas: &HandTextureAtlas, stackNum: stackNum, colorName: &colorName, colorNum: colorNum, numOfCardsToDraw: playerDraw, HandColors: &HandColors)
+        }else if isHand == true{
+        
+            checkIfCardPlayed(touchedNode: &touchedNode, Hand: &Hand,scene: &currentscene, Placement: &Placement, Played: &Played, colorName: &colorName, HandColors: &HandColors, PlayedColors: &PlayedColors)
+        
+        placeCardsInHand(Hand: &Hand)
+        }
+        calculatePlayedCards(Played: &Played, PlayedColors: &PlayedColors)
+        print(self.scene?.children)
+        print("&", round, "&")
+        //print("-", touchedNode.name, "-")
+>>>>>>> parent of 05dd643... Added Rounds, Unfinished Calculations
         }
     }
     

@@ -30,6 +30,21 @@ func opponentStackToHand(Hand: inout[SKSpriteNode]){
 
 func checkIfCardPlayed(touchedNode: inout SKSpriteNode, Hand: inout [SKSpriteNode], scene: inout GameScene,Placement: inout [SKSpriteNode], Played: inout [SKSpriteNode], colorName: inout Int, HandColors: inout [String], PlayedColors: inout [String]){
     
+//    var isPlacement = false
+//    for i in 0...5{
+//        if touchedNode.name == "Placement\(i)"{
+//            isPlacement = true
+//        }
+//    }
+//    
+//    var isPlayed = false
+//    for i in 0...(Played.count){
+//        if touchedNode.name == "Played\(i)"{
+//            isPlayed = true
+//        }
+//        
+//    }
+    
     var isHand = false
     for i in 1...Hand.count-1{
         
@@ -43,60 +58,59 @@ func checkIfCardPlayed(touchedNode: inout SKSpriteNode, Hand: inout [SKSpriteNod
         for place in Placement{
             
             if place != Placement[0] && place != Placement[1] && place != Placement[2]{
-                if(
-                    (((touchedNode.position.x < place.position.x + (place.size.width/2))) && (touchedNode.position.y < place.position.y+(place.size.height/2))) &&
-                        (((touchedNode.position.x > place.position.x - (place.size.width/2)) && (touchedNode.position.y < place.position.y+(place.size.height/2)))) &&
-                        (((touchedNode.position.x < place.position.x + (place.size.width/2)) && (touchedNode.position.y > place.position.y-(place.size.height/2)))) &&
-                        (((touchedNode.position.x > place.position.x - (place.size.width/2)) && ((touchedNode.position.y > place.position.y-(place.size.height/2)))))
-                    
-                    ){
-                    touchedNode.position = place.position
-                    let currentNode = Hand.firstIndex(of: touchedNode)!
-                    
-                    //                var currentPlayed = Bool()
-                    //                var placementName = place.name
-                    //                var placementNum = placementName![(placementName?.endIndex)!]
-                    
-                    
-                    var playedNameHold  = "Played"
-                    var foundNode: SKSpriteNode?
-                    var foundNodeIndexNum = Int()
-                    playedNameHold.append(place.name!.last!)
-                    
-                    for n in Played{
-                        if n.name == playedNameHold{
-                            foundNode = n
-                        }
+            if(
+                (((touchedNode.position.x < place.position.x + (place.size.width/2))) && (touchedNode.position.y < place.position.y+(place.size.height/2))) &&
+                (((touchedNode.position.x > place.position.x - (place.size.width/2)) && (touchedNode.position.y < place.position.y+(place.size.height/2)))) &&
+                (((touchedNode.position.x < place.position.x + (place.size.width/2)) && (touchedNode.position.y > place.position.y-(place.size.height/2)))) &&
+                (((touchedNode.position.x > place.position.x - (place.size.width/2)) && ((touchedNode.position.y > place.position.y-(place.size.height/2)))))
+            
+                ){
+                touchedNode.position = place.position
+                let currentNode = Hand.firstIndex(of: touchedNode)!
+                
+//                var currentPlayed = Bool()
+//                var placementName = place.name
+//                var placementNum = placementName![(placementName?.endIndex)!]
+                
+                
+                var playedNameHold  = "Played"
+                var foundNode: SKSpriteNode?
+                var foundNodeIndexNum = Int()
+                playedNameHold.append(place.name!.last!)
+                
+                for n in Played{
+                    if n.name == playedNameHold{
+                        foundNode = n
                     }
-                    
-                    if foundNode != nil{
-                        scene.removeChildren(in: [scene.childNode(withName: foundNode!.name!)!])
-                        foundNodeIndexNum = Played.firstIndex(of: foundNode!)!
-                        //Played.remove(at: foundNodeIndexNum)
-                    }
-                    else{
-                        foundNodeIndexNum = Int(String(place.name!.last!))!
-                    }
-                    Played[foundNodeIndexNum] = Hand[currentNode]
-                    Played[foundNodeIndexNum].size = place.size
-                    Played[foundNodeIndexNum].zPosition = place.zPosition
-                    Played[foundNodeIndexNum].lightingBitMask = 1
-                    Played[foundNodeIndexNum].name = playedNameHold
-                    PlayedColors[foundNodeIndexNum] = HandColors[currentNode-1]
-                    Hand.remove(at: currentNode)
-                    HandColors.remove(at: currentNode-1)
-                    colorName -= 1
-                    if colorName != 0{
-                        for i in 1...Hand.count-1{
-                            Hand[i].name = "color\(i)"
-                        }
-                    }
+                }
+                
+                if foundNode != nil{
+                    scene.removeChildren(in: [scene.childNode(withName: foundNode!.name!)!])
+                    foundNodeIndexNum = Played.firstIndex(of: foundNode!)!
+                    //Played.remove(at: foundNodeIndexNum)
+                }
+                else{
+                    foundNodeIndexNum = Int(String(place.name!.last!))!
+                }
+                Played[foundNodeIndexNum] = Hand[currentNode]
+                Played[foundNodeIndexNum].size = place.size
+                Played[foundNodeIndexNum].zPosition = place.zPosition
+                Played[foundNodeIndexNum].lightingBitMask = 1
+                Played[foundNodeIndexNum].name = playedNameHold
+                PlayedColors[foundNodeIndexNum] = HandColors[currentNode-1]
+                Hand.remove(at: currentNode)
+                HandColors.remove(at: currentNode-1)
+                colorName -= 1
+                if colorName != 0{
+                for i in 1...Hand.count-1{
+                    Hand[i].name = "color\(i)"
+                }
+                }
                 }
             }
         }
     }
 }
-
 
 
 func redrawPlayerHand(Hand: inout [SKSpriteNode],HandTextureAtlas: inout SKTextureAtlas, stackNum: Int, colorName: inout Int, colorNum:  [Int], didPlayerRedraw: inout Bool) -> Int{
@@ -106,7 +120,7 @@ func redrawPlayerHand(Hand: inout [SKSpriteNode],HandTextureAtlas: inout SKTextu
     if didPlayerRedraw == false{
         
         
-        
+       
         didPlayerRedraw = true
     }
     return currentNumOfCardsToBeRedrawn
@@ -175,7 +189,7 @@ func figureColorOfCard(HandtextureAtlas: inout SKTextureAtlas, validNum: Int, Ha
 }
 
 
-func createCard(Hand: inout [SKSpriteNode], HandTextureAtlas: inout SKTextureAtlas, stackNum: Int, colorName: inout Int, colorNum: [Int], HandColors: inout [String], isComputer: Bool ){
+func createCard(Hand: inout [SKSpriteNode], HandTextureAtlas: inout SKTextureAtlas, stackNum: Int, colorName: inout Int, colorNum: [Int], HandColors: inout [String] ){
     
     var validNum = Int.random(in: 0...colorNum.count)
     
@@ -186,26 +200,19 @@ func createCard(Hand: inout [SKSpriteNode], HandTextureAtlas: inout SKTextureAtl
     Hand.append(SKSpriteNode(imageNamed: HandTextureAtlas.textureNames[validNum]))
     
     figureColorOfCard(HandtextureAtlas: &HandTextureAtlas, validNum: validNum, HandColors: &HandColors)
-    var newYposition = CGFloat()
-    var newXposition = CGFloat()
-    if isComputer == false{
     Hand[Hand.count-1].size = CGSize(width: 216, height: 399)
-    newXposition = Hand[0].position.x - 107
-    newXposition = Hand[0].position.y
-    }
-    else{
-        Hand[Hand.count-1].size = CGSize(width: 216, height: 399)
-         newXposition = Hand[0].position.x - 107
-         newYposition = Hand[0].position.y + 475
-    }
+    var newXposition = Hand[0].position.x - 107
+    var newYposition = Hand[0].position.y
     Hand[Hand.count-1].position = CGPoint(x: newXposition,
                                           y: newYposition)
-    if isComputer == false{
     stackToHand(Hand: &Hand)
+<<<<<<< HEAD
     }
     else{
         opponentStackToHand(Hand: &Hand)
     }
+=======
+>>>>>>> parent of 05dd643... Added Rounds, Unfinished Calculations
     Hand[Hand.count-1].zPosition = 4
     Hand[Hand.count-1].shadowedBitMask = 1
     Hand[Hand.count-1].shadowCastBitMask = 0
@@ -221,37 +228,41 @@ func createCard(Hand: inout [SKSpriteNode], HandTextureAtlas: inout SKTextureAtl
     Hand[Hand.count-1].isUserInteractionEnabled = false
 }
 
-func startHand(GeneralHand: inout [SKSpriteNode], GameScene: inout GameScene, HandTextureAtlas: inout SKTextureAtlas, stackNum: Int, colorName: inout Int, colorNum: [Int], HandColors: inout [String], isComputer: Bool){
+func startHand(GeneralHand: inout [SKSpriteNode], GameScene: inout GameScene, HandTextureAtlas: inout SKTextureAtlas, stackNum: Int, colorName: inout Int, colorNum: [Int], HandColors: inout [String]){
     
     for i in 0...4{
-        createCard(Hand: &GeneralHand, HandTextureAtlas: &HandTextureAtlas, stackNum: stackNum, colorName: &colorName, colorNum: colorNum, HandColors: &HandColors, isComputer: isComputer)
+        createCard(Hand: &GeneralHand, HandTextureAtlas: &HandTextureAtlas, stackNum: stackNum, colorName: &colorName, colorNum: colorNum, HandColors: &HandColors)
         GameScene.addChild(GeneralHand[GeneralHand.count-1])
     }
-    if isComputer == false{
     placeCardsInHand(Hand: &GeneralHand)
+<<<<<<< HEAD
     }
     else{
         placeOpponentCardsInHand(Hand: &GeneralHand)
     }
+=======
+>>>>>>> parent of 05dd643... Added Rounds, Unfinished Calculations
     
 }
 
-func drawCardsforHand(GeneralHand: inout [SKSpriteNode], GameScene: inout GameScene, HandTextureAtlas: inout SKTextureAtlas, stackNum: Int, colorName: inout Int, colorNum: [Int], numOfCardsToDraw: Int, HandColors: inout [String], isComputer: Bool){
+func drawCardsforHand(GeneralHand: inout [SKSpriteNode], GameScene: inout GameScene, HandTextureAtlas: inout SKTextureAtlas, stackNum: Int, colorName: inout Int, colorNum: [Int], numOfCardsToDraw: Int, HandColors: inout [String]){
     
     for i in 1...numOfCardsToDraw{
-        createCard(Hand: &GeneralHand, HandTextureAtlas: &HandTextureAtlas, stackNum: stackNum, colorName: &colorName, colorNum: colorNum, HandColors: &HandColors,  isComputer: isComputer)
+        createCard(Hand: &GeneralHand, HandTextureAtlas: &HandTextureAtlas, stackNum: stackNum, colorName: &colorName, colorNum: colorNum, HandColors: &HandColors)
         GameScene.addChild(GeneralHand[GeneralHand.count-1])
     }
-    if isComputer == false{
     placeCardsInHand(Hand: &GeneralHand)
+<<<<<<< HEAD
     }
     else{
         placeOpponentCardsInHand(Hand: &GeneralHand)
     }
+=======
+>>>>>>> parent of 05dd643... Added Rounds, Unfinished Calculations
     
 }
 
-func calculatePlayedCards(Played: inout [SKSpriteNode], PlayedColors: inout [String]) -> [Int]{
+func calculatePlayedCards(Played: inout [SKSpriteNode], PlayedColors: inout [String]){
     
     // RED > GREEN
     // GREEN > BLUE
@@ -375,39 +386,11 @@ func calculatePlayedCards(Played: inout [SKSpriteNode], PlayedColors: inout [Str
         default:
             laneWinnerNum.append(-1)
         }
-    }
-    return laneWinnerNum
-    
-}
-
-func isGameFinished(playerHPnum: Int, computerHPnum: Int)-> String{
-    
-    var finalResult = String()
-    
-    if playerHPnum <= 0{
-        finalResult = "Player"
-    }
-    else if computerHPnum <= 0{
-        finalResult = "Computer"
         
     }
     
-    else if playerHPnum <= 0 && computerHPnum <= 0 {
-        finalResult = "Tie"
-    }
-    else if playerHPnum > 0 && computerHPnum > 0{
-        finalResult = "No"
-    }
-    return finalResult
-}
-
-func computerTurn(computerHand: inout [SKSpriteNode], computerHandColors: inout [String], Played: inout [SKSpriteNode], PlayedColors: inout [String] ){
-    var numOfCardsToPlace = Int.random(in: 1...3)
-    var placesCardsArePlaced = [-1,-1,-1]
-    var isCardPlacedThere = [false,false,false]
-    var hold = 0
-    var breakWhile = false
     
+<<<<<<< HEAD
     while hold < numOfCardsToPlace{
         
         var numToBePlaced = Int.random(in: 0...2)
@@ -554,6 +537,8 @@ func finishRound(isPlayerTurnOver: inout Bool, isComputerTurnOver: inout Bool, r
         }
         
     }
+=======
+>>>>>>> parent of 05dd643... Added Rounds, Unfinished Calculations
     
     
-
+}

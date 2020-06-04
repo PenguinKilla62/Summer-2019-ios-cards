@@ -10,11 +10,19 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Animation Test/GameScene.swift"
+<<<<<<< HEAD
             timestampString = "587424827.942789"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "71"
             endingLineNumber = "71"
+=======
+            timestampString = "586810575.546652"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
+>>>>>>> parent of 05dd643... Added Rounds, Unfinished Calculations
             landmarkName = "didMove(to:)"
             landmarkType = "7">
          </BreakpointContent>
